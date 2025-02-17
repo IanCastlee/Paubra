@@ -51,7 +51,7 @@ const Skills = () => {
             </Link>
           ))
         ) : (
-          <p>No Data yet</p>
+          <p>No Data yet!</p>
         )}
       </div>
     </div>
