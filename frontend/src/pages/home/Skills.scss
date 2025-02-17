@@ -1,0 +1,159 @@
+.skills {
+  width: 100%;
+  padding: 20px 200px;
+  margin-top: -30px;
+  z-index: 999;
+  background-color: #fff;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+
+  .search-container {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+
+    .search-icon-wrapper {
+      display: flex;
+      align-items: center;
+      width: 500px;
+      height: 40px;
+      border: 1px solid #344cb7;
+      border-radius: 25px;
+      overflow: hidden;
+      padding: 0 10px;
+
+      .search-input {
+        border: none;
+        width: 100%;
+        height: 40px;
+        padding-left: 12px;
+        font-size: 14px;
+        color: #1b262c;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      .search-icon {
+        font-size: 35px;
+        cursor: pointer;
+        margin-left: 10px;
+        color: blue;
+      }
+
+      &:focus {
+        border: 2px solid #344cb7;
+      }
+    }
+  }
+
+  .skills-container {
+    width: 100%;
+    margin-top: 50px;
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+    gap: 20px;
+    .skill {
+      padding: 7px 20px;
+      border: 1px solid lightgray;
+      background-color: #fff;
+      text-decoration: none;
+      border-radius: 25px;
+      cursor: pointer;
+      width: auto;
+      display: inline-block;
+      span {
+        color: #1b262c;
+        font-size: 14px;
+        font-weight: 500;
+
+        &:hover {
+          color: #fff;
+        }
+      }
+
+      &:hover {
+        background-color: #344cb7;
+      }
+    }
+  }
+}
+
+@media (max-width: 786px) {
+  .skills {
+    width: 100%;
+    padding: 10px 15px;
+    margin-top: -35px;
+    z-index: 999;
+    background-color: #fff;
+    border-top-left-radius: 20px;
+    border-top-right-radius: 20px;
+
+    .search-container {
+      width: 100%;
+      display: flex;
+      justify-content: end;
+      align-items: center;
+
+      .search-icon-wrapper {
+        display: flex;
+        align-items: center;
+        width: 100%;
+        height: 45px;
+        border: 1px solid #344cb7;
+        border-radius: 25px;
+        overflow: hidden;
+        padding: 0 10px;
+
+        .search-input {
+          border: none;
+          width: 100%;
+          height: 44px;
+          padding-left: 12px;
+          font-size: 14px;
+          color: #1b262c;
+
+          &:focus {
+            outline: none;
+          }
+        }
+
+        .search-icon {
+          font-size: 35px;
+          cursor: pointer;
+          margin-left: 10px;
+          color: blue;
+        }
+
+        &:focus {
+          border: 2px solid #344cb7;
+        }
+      }
+    }
+
+    .skills-container {
+      width: 100%;
+      margin-top: 50px;
+      display: flex;
+      justify-content: start;
+      flex-wrap: wrap;
+      gap: 20px;
+      .skill {
+        padding: 7px 20px;
+        border: 1px solid lightgray;
+        background-color: #fff;
+        border-radius: 25px;
+        cursor: pointer;
+        width: auto;
+        display: inline-block;
+        span {
+          color: #1b262c;
+          font-size: 14px;
+        }
+      }
+    }
+  }
+}
