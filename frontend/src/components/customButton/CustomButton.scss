@@ -1,0 +1,17 @@
+.custom-button {
+  &.submit-button {
+    background-color: orange;
+    width: 120px;
+    border-radius: 25px;
+    font-weight: 500;
+    color: #fff;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    height: 40px;
+
+    &:hover {
+      background-color: rgb(194, 132, 17);
+    }
+  }
+}

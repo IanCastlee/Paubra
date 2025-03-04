@@ -16,7 +16,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// Multiple Image Upload Fields
+//WORKER REGISTRATION
+// multiple Image Upload Fields
 route.post(
   "/register",
   upload.fields([

@@ -7,6 +7,7 @@ const app = express();
 // ROUTES
 import authRoutes from "./routes/authroute.js";
 import workerRoutes from "./routes/worker_routes.js";
+import authroutes_client from "./routes/authroute_client.js";
 
 // MIDDLEWARES
 app.use(
@@ -23,9 +24,12 @@ app.use(
   express.static(path.join(process.cwd(), "user_registration_images"))
 );
 
-//ROURTES
+//ROURTES WORKER
 app.use("/api/auth", authRoutes);
 app.use("/api/worker", workerRoutes);
+
+//ROUTES CLIENT
+app.use("/api/auth-client", authroutes_client);
 
 const port = 8080;
 app.listen(port, () => {

@@ -7,6 +7,9 @@ import Authlayout from "./pages/authlayout/Authlayout";
 import Signin from "./pages/authlayout/signin/Signin";
 import Signup from "./pages/authlayout/signup/Signup";
 
+import SignUp from "./components/signin_signup/signup/SignUp";
+import SignIn from "./components/signin_signup/signin/SignIn";
+
 const App = () => {
   return (
     <BrowserRouter>
@@ -17,8 +20,13 @@ const App = () => {
         <Route path="/worker-profile/:userid" element={<Workerprofile />} />
 
         <Route path="/auth" element={<Authlayout />}>
+          {/* worker */}
           <Route path="signin" element={<Signin />} />
           <Route path="signup" element={<Signup />} />
+
+          {/* client */}
+          <Route path="signup-client" element={<SignUp />} />
+          <Route path="signin-client" element={<SignIn />} />
           <Route />
         </Route>
       </Routes>

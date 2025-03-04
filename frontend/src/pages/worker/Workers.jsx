@@ -5,6 +5,7 @@ import userPpP from "../../assets/images/electricianimg.jpg";
 
 //ICONS
 import { MdSort } from "react-icons/md";
+import { RiFileList3Fill } from "react-icons/ri";
 
 //REACT HOOKS
 import { Link, useParams } from "react-router-dom";
@@ -16,29 +17,38 @@ const Workers = () => {
 
   console.log("SKILLL : ", skill);
   //hooks
+  const [loader, setloader] = useState(false);
   const [showSortModal, setshowSortModal] = useState(false);
   const [rowNumber, setrowNumber] = useState(null);
+  const [data, setdata] = useState([]);
 
   //getSpecificWorker
   useEffect(() => {
-    const getSpecificWorker = () => {
-      axiosInstance
-        .get(`worker/worker-specific-skill/${skill}`)
-        .then((response) => {
-          console.log("SKILL FROM BE : ", response.data);
-        })
-        .catch((error) => {
-          console.log("Error : ", error);
-          console.log("Error : ", error.response);
-          console.log("Error : ", error.response.data);
-          console.log(
-            "Error : ",
-            error.response.data.error || "Something went wrong!"
-          );
-        });
+    let isMounted = true;
+    setloader(true);
+
+    const getSpecificWorker = async () => {
+      try {
+        const response = await axiosInstance.get(
+          `worker/worker-specific-skill/${skill}`
+        );
+        if (isMounted) {
+          setdata(response.data);
+          setloader(false);
+        }
+      } catch (error) {
+        if (isMounted) {
+          console.log("Error:", error);
+          setloader(false);
+        }
+      }
     };
 
     getSpecificWorker();
+
+    return () => {
+      isMounted = false;
+    };
   }, [skill]);
 
   return (
@@ -65,101 +75,38 @@ const Workers = () => {
         </div>
 
         <div className="workers-container">
-          <div className={`card  ${rowNumber === 1 ? "one" : "two"} `}>
-            <div className={`top  ${rowNumber === 1 ? "one" : "two"} `}>
-              <img src={userPpP} alt="" />
+          {loader ? (
+            <span className="loader"></span>
+          ) : data.length > 0 ? (
+            data.map((d) => (
+              <div className={`card  ${rowNumber === 1 ? "one" : "two"} `}>
+                <div className={`top  ${rowNumber === 1 ? "one" : "two"} `}>
+                  <img
+                    src={`http://localhost:8080/upload/${d.profile_pic}`}
+                    alt=""
+                  />
+                </div>
+
+                <div className="bot">
+                  <span className="name">{d.username}</span>
+                  <span className="address">{d.address}</span>
+                  <h6>{d.main_skill}</h6>
+
+                  <Link
+                    className="button"
+                    to={`/worker-profile/${d.worker_id}`}
+                  >
+                    View Profile
+                  </Link>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="no-data">
+              <RiFileList3Fill className="no-data-icon" />
+              <span> NO DATA RECORD</span>
             </div>
-
-            <div className="bot">
-              <span className="name">Eyhan</span>
-              <span className="address">San Francisco</span>
-              <h6>Electrician</h6>
-
-              <Link className="button" to={`/worker-profile/${1}`}>
-                View Profile
-              </Link>
-            </div>
-          </div>
-
-          <div className={`card  ${rowNumber === 1 ? "one" : "two"} `}>
-            <div className={`top  ${rowNumber === 1 ? "one" : "two"} `}>
-              <img src={userPpP} alt="" />
-            </div>
-
-            <div className="bot">
-              <span className="name">Eyhan</span>
-              <span className="address">San Francisco</span>
-              <h6>Electrician</h6>
-
-              <Link className="button" to={`/worker-profile/${1}`}>
-                View Profile
-              </Link>
-            </div>
-          </div>
-
-          <div className={`card  ${rowNumber === 1 ? "one" : "two"} `}>
-            <div className={`top  ${rowNumber === 1 ? "one" : "two"} `}>
-              <img src={userPpP} alt="" />
-            </div>
-
-            <div className="bot">
-              <span className="name">Eyhan</span>
-              <span className="address">San Francisco</span>
-              <h6>Electrician</h6>
-
-              <Link className="button" to={`/worker-profile/${1}`}>
-                View Profile
-              </Link>
-            </div>
-          </div>
-
-          <div className={`card  ${rowNumber === 1 ? "one" : "two"} `}>
-            <div className={`top  ${rowNumber === 1 ? "one" : "two"} `}>
-              <img src={userPpP} alt="" />
-            </div>
-
-            <div className="bot">
-              <span className="name">Eyhan</span>
-              <span className="address">San Francisco</span>
-              <h6>Electrician</h6>
-
-              <Link className="button" to={`/worker-profile/${1}`}>
-                View Profile
-              </Link>
-            </div>
-          </div>
-
-          <div className={`card  ${rowNumber === 1 ? "one" : "two"} `}>
-            <div className={`top  ${rowNumber === 1 ? "one" : "two"} `}>
-              <img src={userPpP} alt="" />
-            </div>
-
-            <div className="bot">
-              <span className="name">Eyhan</span>
-              <span className="address">San Francisco</span>
-              <h6>Electrician</h6>
-
-              <Link className="button" to={`/worker-profile/${1}`}>
-                View Profile
-              </Link>
-            </div>
-          </div>
-
-          <div className={`card  ${rowNumber === 1 ? "one" : "two"} `}>
-            <div className={`top  ${rowNumber === 1 ? "one" : "two"} `}>
-              <img src={userPpP} alt="" />
-            </div>
-
-            <div className="bot">
-              <span className="name">Eyhan</span>
-              <span className="address">San Francisco</span>
-              <h6>Electrician</h6>
-
-              <Link className="button" to={`/worker-profile/${1}`}>
-                View Profile
-              </Link>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </>

@@ -1,7 +1,6 @@
 import "./Workerprofile.scss";
 
 // IMAGES
-import bgdp from "../assets/images/userbg.jpg";
 import userdp from "../assets/images/360_F_622221708_Gg16ZdaNSixeaIORq9MuuT4w9VWTkYw4.jpg";
 
 // ICONS
@@ -23,9 +22,13 @@ import { reviews } from "../dummyReviews";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../context/Authcontext";
 import axiosInstance from "../axios";
+import { useParams } from "react-router-dom";
 
 const Workerprofile = () => {
   const { currrentuser, setcurrrentuser } = useContext(AuthContext);
+  const _worker_id = useParams();
+
+  const [visitWorker, setvisitWorker] = useState([]);
 
   // USEREF
   const scrollRef = useRef(null);
@@ -65,12 +68,12 @@ const Workerprofile = () => {
 
   //FORM DATA (about me)
   useEffect(() => {
-    setaboutme(currrentuser.about_me || "");
-  }, [currrentuser]);
+    setaboutme(visitWorker.about_me || "");
+  }, [visitWorker]);
 
   const [showSendAboutBtn, setshowSendAboutBtn] = useState(false);
   const [showEditAboutBtn, setshowEditAboutBtn] = useState(true);
-  const [aboutme, setaboutme] = useState(currrentuser.about_me || "");
+  const [aboutme, setaboutme] = useState(visitWorker.about_me || "");
 
   //loader
   const [showLoader, setshowLoader] = useState(false);
@@ -82,7 +85,7 @@ const Workerprofile = () => {
 
     const aboutmeData = new FormData();
     aboutmeData.append("aboutme", aboutme);
-    aboutmeData.append("worker_id", currrentuser.worker_id);
+    aboutmeData.append("worker_id", visitWorker.worker_id);
     try {
       const res = await axiosInstance.post("worker/updateabout", aboutmeData);
       console.log(res.data.message);
@@ -98,10 +101,10 @@ const Workerprofile = () => {
   useEffect(() => {
     const fetchCurrentUserData = () => {
       axiosInstance
-        .get(`worker/worker-info/${currrentuser.worker_id}`)
+        .get(`worker/worker-info/${_worker_id.userid}`)
         .then((response) => {
           console.log(response.data);
-          setcurrrentuser(response.data);
+          setvisitWorker(response.data);
 
           setshowSendAboutBtn(false);
         })
@@ -117,18 +120,21 @@ const Workerprofile = () => {
     };
 
     fetchCurrentUserData();
-  }, [currrentuser.worker_id]);
+  }, []);
 
   //get length of other_skill
   const otherSkill =
-    currrentuser.other_skill && JSON.parse(currrentuser.other_skill);
+    visitWorker.other_skill && JSON.parse(visitWorker.other_skill);
 
+  console.log(visitWorker);
   return (
     <div className="worker-profile">
       <div className={`worker-profile-top ${fixed ? "scroll" : ""}`}>
         <div className="reviews-h1-container">
           <div className="main-skill-wrapper">
-            <h1>{currrentuser.main_skill.toUpperCase()}</h1>
+            <h1>
+              {visitWorker.main_skill && visitWorker.main_skill.toUpperCase()}
+            </h1>
 
             <div className="stars">
               <span>Reviews :</span>
@@ -154,15 +160,15 @@ const Workerprofile = () => {
         <img
           className="img-pp"
           alt="User Profile"
-          src={`http://localhost:8080/upload/${currrentuser.profile_pic}`}
+          src={`http://localhost:8080/upload/${visitWorker.profile_pic}`}
         />
       </div>
       <div className={`worker-profile-container ${fixed ? "scroll" : ""}`}>
         <div className="personal-info">
-          <h3>{currrentuser.fullname}</h3>
-          <span>{currrentuser.address}</span>
-          <span>Gender: {currrentuser.gender}</span>
-          <span>Age: {currrentuser.age}</span>
+          <h3>{visitWorker.fullname}</h3>
+          <span>{visitWorker.address}</span>
+          <span>Gender: {visitWorker.gender}</span>
+          <span>Age: {visitWorker.age}</span>
         </div>
 
         {otherSkill && (

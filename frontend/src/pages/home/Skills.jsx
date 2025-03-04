@@ -45,8 +45,8 @@ const Skills = () => {
 
       <div className="skills-container">
         {workerskill.length > 0 ? (
-          workerskill.map((ws) => (
-            <Link className="skill" to={`/worker/${ws.main_skill}`}>
+          workerskill.map((ws, index) => (
+            <Link key={index} className="skill" to={`/worker/${ws.main_skill}`}>
               <span key={ws.main_skill}>{ws.main_skill}</span>
             </Link>
           ))

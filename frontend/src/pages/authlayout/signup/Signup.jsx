@@ -11,7 +11,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../axios";
 
-import purokData from "../../../static_data/Address";
+import purokData from "../../../static_data/purokData";
 const Signup = () => {
   const navigate = useNavigate();
   console.log(purokData);
@@ -49,48 +49,7 @@ const Signup = () => {
   };
 
   //FORM CONTROL
-  const [showForm1, setshowForm1] = useState(true);
-  const [showForm2, setshowForm2] = useState(false);
-  const [showForm3, setshowForm3] = useState(false);
-  const [showForm4, setshowForm4] = useState(false);
-  const [showForm5, setshowForm5] = useState(false);
-
-  const handleShowForm1 = () => {
-    setshowForm1(true);
-    setshowForm2(false);
-    setshowForm3(false);
-    setshowForm4(false);
-    setshowForm5(false);
-  };
-  const handleShowForm2 = () => {
-    setshowForm1(false);
-    setshowForm2(true);
-    setshowForm3(false);
-    setshowForm4(false);
-    setshowForm5(false);
-  };
-  const handleShowForm3 = () => {
-    setshowForm1(false);
-    setshowForm2(false);
-    setshowForm3(true);
-    setshowForm4(false);
-    setshowForm5(false);
-  };
-  const handleShowForm4 = () => {
-    setshowForm1(false);
-    setshowForm2(false);
-    setshowForm3(false);
-    setshowForm4(true);
-    setshowForm5(false);
-  };
-  const handleShowForm5 = () => {
-    setshowForm1(false);
-    setshowForm2(false);
-    setshowForm3(false);
-    setshowForm4(false);
-    setshowForm5(true);
-  };
-
+  const [showForm, setshowForm] = useState(1);
   //skills
   const skills = [
     "Electrician",
@@ -171,20 +130,20 @@ const Signup = () => {
           <div className="signin-right">
             <div className="signin-right-top">
               <h3>
-                {showForm1
+                {showForm === 1
                   ? "Let's Create your Account"
-                  : showForm2
+                  : showForm === 2
                   ? "Your Skills"
-                  : showForm3
+                  : showForm === 3
                   ? "Attach your Certificates"
-                  : showForm4
+                  : showForm === 4
                   ? "Upload Photo"
-                  : showForm5
+                  : showForm === 5
                   ? "Credentials"
                   : "Let's Create your Account"}
               </h3>
             </div>
-            {showForm1 && (
+            {showForm === 1 && (
               <div className="signin-rigth-form1">
                 <div className="input-wrapper">
                   <label htmlFor="fullname">Fullname</label>
@@ -271,13 +230,13 @@ const Signup = () => {
                     Female
                   </label>
                 </div>
-                <button className="btn-continue" onClick={handleShowForm2}>
+                <button className="btn-continue" onClick={() => setshowForm(2)}>
                   Continue
                 </button>
               </div>
             )}
 
-            {showForm2 && (
+            {showForm === 2 && (
               <div className="signin-rigth-form2">
                 <div className="input-wrapper">
                   <label htmlFor="mainskill">Main Skill</label>
@@ -313,16 +272,19 @@ const Signup = () => {
                 </div>
 
                 <div className="button-wrapper">
-                  <button className="btn-back" onClick={handleShowForm1}>
+                  <button className="btn-back" onClick={() => setshowForm(1)}>
                     Back
                   </button>
-                  <button className="btn-continue" onClick={handleShowForm3}>
+                  <button
+                    className="btn-continue"
+                    onClick={() => setshowForm(3)}
+                  >
                     Continue
                   </button>
                 </div>
               </div>
             )}
-            {showForm3 && (
+            {showForm === 3 && (
               <div className="signin-rigth-form3">
                 <div className="certificate-wrapper">
                   <div className="permit">
@@ -362,17 +324,20 @@ const Signup = () => {
                 </div>
 
                 <div className="button-wrapper">
-                  <button className="btn-back" onClick={handleShowForm2}>
+                  <button className="btn-back" onClick={() => setshowForm(2)}>
                     Back
                   </button>
-                  <button className="btn-continue" onClick={handleShowForm4}>
+                  <button
+                    className="btn-continue"
+                    onClick={() => setshowForm(4)}
+                  >
                     Continue
                   </button>
                 </div>
               </div>
             )}
 
-            {showForm4 && (
+            {showForm === 4 && (
               <div className="signin-rigth-form4">
                 <div className="profilepic-wrapper">
                   <div className="profilepic">
@@ -406,17 +371,20 @@ const Signup = () => {
                 </div>
 
                 <div className="button-wrapper">
-                  <button className="btn-back" onClick={handleShowForm3}>
+                  <button className="btn-back" onClick={() => setshowForm(3)}>
                     Back
                   </button>
-                  <button className="btn-continue" onClick={handleShowForm5}>
+                  <button
+                    className="btn-continue"
+                    onClick={() => setshowForm(5)}
+                  >
                     Continue
                   </button>
                 </div>
               </div>
             )}
 
-            {showForm5 && (
+            {showForm === 5 && (
               <div className="signin-rigth-form5">
                 <div className="input-wrapper">
                   <label htmlFor="username">Username</label>
@@ -454,7 +422,7 @@ const Signup = () => {
                 </div>
 
                 <div className="button-wrapper">
-                  <button className="btn-back" onClick={handleShowForm4}>
+                  <button className="btn-back" onClick={() => setshowForm(4)}>
                     Back
                   </button>
                   <button className="btn-continue" onClick={handleSubmit}>
