@@ -2,16 +2,25 @@ import "./SignIn.scss";
 import { useNavigate } from "react-router-dom";
 
 //IMAGES and  ICONS
-import logo from "../../../assets/icon/Paubra-removebg-preview.png";
+import logo from "../../../assets/icon/PAUBRA (5).png";
+import logo2 from "../../../assets/icon/PAUBRA (4).png";
 //
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../../context/Authcontext";
+import { ClientContext } from "../../../context/Clientcontext";
+import Toast from "../../toastNotification/Toast";
 
 const SignIn = () => {
-  const { login, currrentuser } = useContext(AuthContext);
-
+  const { loginClient } = useContext(ClientContext);
   const navigate = useNavigate();
+
+  const [showLoader, setShowLoader] = useState(false);
+  const [errMessage, setErrMessage] = useState("");
+  const [messageFromBackEnd, setMessageFromBackEnd] = useState({
+    message: "",
+    messageType: "",
+  });
+  const [showToastNotification, setshowToastNotification] = useState(false);
 
   const [form, setform] = useState({
     username: "",
@@ -19,19 +28,52 @@ const SignIn = () => {
   });
 
   const handleChange = (e) => {
+    setErrMessage("");
     setform((prevData) => ({
       ...prevData,
       [e.target.name]: e.target.value,
     }));
   };
 
+  //handleSignIn
   const handleSignIn = async (e) => {
     e.preventDefault();
+
+    setShowLoader(true);
     try {
-      await login(form);
-      navigate(`/worker-profile/${currrentuser.worker_id}`);
+      await loginClient(form);
+      // setshowToastNotification(fla);
+      // setMessageFromBackEnd({
+      //   message: "Sign In Succesful",
+      //   messageType: "success",
+      // });
+
+      setTimeout(() => {
+        navigate("/home");
+        setMessageFromBackEnd({ message: "", messageType: "" });
+        setshowToastNotification(false);
+
+        setShowLoader(false);
+      }, 3000);
     } catch (error) {
-      console.log("Error: ", error);
+      if (error.response) {
+        setErrMessage(error.response.data.error);
+        setShowLoader(false);
+      } else {
+        console.log("Error:  Server Error");
+        setshowToastNotification(true);
+        setMessageFromBackEnd({
+          message: " Server Error",
+          messageType: "error",
+        });
+        setShowLoader(false);
+
+        setTimeout(() => {
+          setMessageFromBackEnd({ message: "", messageType: "" });
+          setshowToastNotification(false);
+        }, 3000);
+        setShowLoader(false);
+      }
     }
   };
 
@@ -49,6 +91,10 @@ const SignIn = () => {
           <div className="signin-right">
             <div className="signin-right-top">
               <h3>Sign In your Paubra Accout</h3>
+
+              <div className="mobile-added-img">
+                <img src={logo2} alt="" />
+              </div>
             </div>
             <div className="signin-rigth-form">
               <div className="input-wrapper">
@@ -63,6 +109,12 @@ const SignIn = () => {
                 />
               </div>
               <div className="input-wrapper">
+                <span
+                  className="error-message"
+                  style={{ color: "red", fontSize: "0.625rem" }}
+                >
+                  {errMessage}
+                </span>
                 <label htmlFor="passwprd">Password</label>
                 <input
                   type="text"
@@ -74,6 +126,14 @@ const SignIn = () => {
                 />
               </div>{" "}
               <button onClick={handleSignIn}>Sign In</button>
+              <div className="mobile-added-no-acc">
+                <span>
+                  Don't have an account ?{" "}
+                  <strong onClick={() => navigate("/auth/signup-client")}>
+                    Sign Up
+                  </strong>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -82,7 +142,20 @@ const SignIn = () => {
           className="close-icon"
           onClick={() => navigate(-1)}
         />
+
+        {showToastNotification && (
+          <Toast
+            message={messageFromBackEnd.message}
+            messageType={messageFromBackEnd.messageType}
+          />
+        )}
       </div>
+
+      {showLoader && (
+        <div className="overlay-signin">
+          <span className="loader"></span>
+        </div>
+      )}
     </>
   );
 };

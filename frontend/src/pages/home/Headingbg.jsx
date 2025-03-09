@@ -13,11 +13,11 @@ const Headingbg = () => {
         <div className="img-hero-container">
           <div className="hero-wrapper">
             {/* <h1 className="hero">Find Skilled Workers in Bulusan</h1> */}
-            <h1 className="hero">Find Skilled Workers in Bulan</h1>
+            <h1 className="hero">Find Skilled Workers in Bulusan</h1>
 
             <h3 className="sub-title">
-              Search for skilled professionals like plumbers, carpenters,
-              electricians, and more in your area.
+              Discover skilled professionals in Bulusan—plumbers, carpenters,
+              electricians, and more—ready to meet your needs.
             </h3>
             <CustomButton
               _style={"submit-button"}

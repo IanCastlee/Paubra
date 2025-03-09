@@ -18,7 +18,6 @@ import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 // DUMMY DATA
 import { projects } from "../dummyproj";
-import { reviews } from "../dummyReviews";
 import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../context/Authcontext";
 import axiosInstance from "../axios";
@@ -28,7 +27,11 @@ const Workerprofile = () => {
   const { currrentuser, setcurrrentuser } = useContext(AuthContext);
   const _worker_id = useParams();
 
+  //
   const [visitWorker, setvisitWorker] = useState([]);
+
+  console.log("currrentuser : ", currrentuser && currrentuser.worker_id);
+  console.log("Worker ID  : ", _worker_id);
 
   // USEREF
   const scrollRef = useRef(null);
@@ -60,7 +63,7 @@ const Workerprofile = () => {
     scrollUp();
   };
 
-  // SCROLL UP FUNCTION WITH SCROLL INTO VIEW
+  // SCROLL UP FUNCTION (SCROLL INTO VIEW)
   const [fixed, setfixed] = useState(false);
   const scrollUp = () => {
     setfixed(true);
@@ -105,7 +108,6 @@ const Workerprofile = () => {
         .then((response) => {
           console.log(response.data);
           setvisitWorker(response.data);
-
           setshowSendAboutBtn(false);
         })
         .catch((error) => {
@@ -127,6 +129,19 @@ const Workerprofile = () => {
     visitWorker.other_skill && JSON.parse(visitWorker.other_skill);
 
   console.log(visitWorker);
+
+  useEffect(() => {
+    if (currrentuser && currrentuser.worker_id == _worker_id.userid) {
+      console.log("EQUAL");
+    } else {
+      console.log(
+        "NOT EQUAL",
+        currrentuser && currrentuser.worker_id,
+        _worker_id.userid
+      );
+    }
+  }, []);
+
   return (
     <div className="worker-profile">
       <div className={`worker-profile-top ${fixed ? "scroll" : ""}`}>
@@ -175,7 +190,8 @@ const Workerprofile = () => {
           <div className="other-skill">
             <h3>{`Other Skill${otherSkill.length > 0 ? "s" : ""}`}</h3>
 
-            {otherSkill && otherSkill.map((os) => <p>{os}</p>)}
+            {otherSkill &&
+              otherSkill.map((os, index) => <p key={index}>{os}</p>)}
           </div>
         )}
 
@@ -186,8 +202,9 @@ const Workerprofile = () => {
             readOnly={showSendAboutBtn ? false : true}
             placeholder="Add info about your self or related to your skill"
           ></textarea>
-
-          {showEditAboutBtn ? (
+          {currrentuser &&
+          currrentuser.worker_id == _worker_id.userid &&
+          showEditAboutBtn ? (
             <LiaUserEditSolid
               title="Edit"
               className="edit-icon"

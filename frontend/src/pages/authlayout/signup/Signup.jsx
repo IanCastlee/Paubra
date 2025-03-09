@@ -2,7 +2,8 @@ import "./Signup.scss";
 import { useNavigate } from "react-router-dom";
 
 //IMAGES and  ICONS
-import logo from "../../../assets/icon/Paubra-removebg-preview.png";
+import logo from "../../../assets/icon/PAUBRA (5).png";
+import logo2 from "../../../assets/icon/PAUBRA (4).png";
 import permitimg from "../../../assets/images/card.png";
 import certifimg from "../../../assets/images/certificate.png";
 import addphoto from "../../../assets/images/add-photo.png";
@@ -14,10 +15,15 @@ import axiosInstance from "../../../axios";
 import purokData from "../../../static_data/purokData";
 const Signup = () => {
   const navigate = useNavigate();
+
+  const [showLoader, setshowLoader] = useState(false);
+  const [succcesMessage, setsucccesMessage] = useState("");
+
   console.log(purokData);
   //FORM DATA
   const [otherSkills, setOtherSkills] = useState([]);
   const [barangay, setbarangay] = useState("");
+
   const [purok, setpurok] = useState("");
   const [age, setage] = useState(null);
   const [form, setForm] = useState({
@@ -85,6 +91,7 @@ const Signup = () => {
   //handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setshowLoader(true);
 
     const formData = new FormData();
     formData.append("fullname", form.fullname);
@@ -109,9 +116,13 @@ const Signup = () => {
       const res = await axiosInstance.post("auth/register", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      console.log(res.data);
+
+      setTimeout(() => {
+        setshowLoader(false);
+      }, 3000);
     } catch (error) {
       console.error("Upload failed", error);
+      setshowLoader(false);
     }
   };
   const today = new Date();
@@ -142,6 +153,9 @@ const Signup = () => {
                   ? "Credentials"
                   : "Let's Create your Account"}
               </h3>
+              <div className="mobile-added-img">
+                <img src={logo2} alt="" />
+              </div>
             </div>
             {showForm === 1 && (
               <div className="signin-rigth-form1">
@@ -233,6 +247,15 @@ const Signup = () => {
                 <button className="btn-continue" onClick={() => setshowForm(2)}>
                   Continue
                 </button>
+
+                <div className="mobile-added-no-acc">
+                  <span>
+                    Don't have an account ?{" "}
+                    <strong onClick={() => navigate("/auth/signin")}>
+                      Sign In
+                    </strong>
+                  </span>
+                </div>
               </div>
             )}
 
@@ -429,6 +452,15 @@ const Signup = () => {
                     Sign Up
                   </button>
                 </div>
+
+                <div className="mobile-added-no-acc">
+                  <span>
+                    Don't have an account ?{" "}
+                    <strong onClick={() => navigate("/auth/signin")}>
+                      Sign In
+                    </strong>
+                  </span>
+                </div>
               </div>
             )}
           </div>
@@ -439,6 +471,13 @@ const Signup = () => {
           onClick={() => navigate(-1)}
         />
       </div>
+
+      {showLoader && (
+        <div className="overlay-signin">
+          <span>Checking Credentials Availability....</span>
+          <span className="loader"></span>
+        </div>
+      )}
     </>
   );
 };

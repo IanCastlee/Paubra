@@ -11,6 +11,16 @@ const Skills = () => {
 
   const [workerskill, setworkerskill] = useState([]);
 
+  const [showFirstHint, setShowFirstHint] = useState(true);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowFirstHint((prev) => !prev);
+    }, 10000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   useEffect(() => {
     const getSkills = () => {
       axiosInstance
@@ -33,13 +43,30 @@ const Skills = () => {
   return (
     <div className="skills">
       <div className="search-container">
+        {/* <div className="hero">
+          {showFirstHint ? (
+            <span>
+              <strong>Hint:</strong> Browse worker profiles and read reviews
+              from previous clients to ensure you hire the right person for the
+              job.
+            </span>
+          ) : (
+            <span>
+              <strong>Hint:</strong> You can view a worker's previous projects
+              to ensure they have the skills and experience needed for the job.
+            </span>
+          )}
+        </div> */}
         <div className="search-icon-wrapper">
           <input
             type="text"
             className="search-input"
             placeholder="Search by skill, location, or name"
           />
-          <IoSearchOutline className="search-icon" />
+
+          <button>
+            <IoSearchOutline className="search-icon" />
+          </button>
         </div>
       </div>
 

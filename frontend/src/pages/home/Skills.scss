@@ -1,27 +1,39 @@
 .skills {
   width: 100%;
-  padding: 20px 200px;
-  margin-top: -30px;
-  z-index: 999;
-  background-color: #fff;
+  height: 100vh;
+
+  background-color: #f1f1f1;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
 
   .search-container {
     width: 100%;
     display: flex;
-    justify-content: end;
+    justify-content: space-between;
     align-items: center;
+    background-color: #3572ef;
+    height: 150px;
+    padding: 0 150px;
+    gap: 50px;
+
+    .hero {
+      width: 60%;
+      span {
+        font-size: 1.125rem;
+        color: #fff;
+      }
+    }
 
     .search-icon-wrapper {
       display: flex;
       align-items: center;
-      width: 500px;
+      width: 40%;
       height: 40px;
-      border: 1px solid #344cb7;
+      border: 1px solid lightgray;
       border-radius: 25px;
       overflow: hidden;
       padding: 0 10px;
+      background-color: #fff;
 
       .search-input {
         border: none;
@@ -36,11 +48,17 @@
         }
       }
 
-      .search-icon {
-        font-size: 35px;
-        cursor: pointer;
-        margin-left: 10px;
-        color: blue;
+      button {
+        background-color: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        .search-icon {
+          font-size: 35px;
+          cursor: pointer;
+          margin-left: 10px;
+          color: blue;
+        }
       }
 
       &:focus {
@@ -51,11 +69,15 @@
 
   .skills-container {
     width: 100%;
-    margin-top: 50px;
+    margin-top: -20px;
     display: flex;
     justify-content: start;
     flex-wrap: wrap;
     gap: 20px;
+    padding: 20px 200px;
+    background-color: #f1f1f1;
+    border-top-left-radius: 25px;
+    border-top-right-radius: 25px;
     .skill {
       padding: 7px 20px;
       border: 1px solid lightgray;
@@ -77,6 +99,11 @@
 
       &:hover {
         background-color: #344cb7;
+        color: #fff;
+
+        & span {
+          color: #fff;
+        }
       }
     }
   }
@@ -85,33 +112,45 @@
 @media (max-width: 786px) {
   .skills {
     width: 100%;
-    padding: 10px 15px;
-    margin-top: -35px;
-    z-index: 999;
-    background-color: #fff;
+    height: 100vh;
+    background-color: #f1f1f1;
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
 
     .search-container {
       width: 100%;
       display: flex;
-      justify-content: end;
+      justify-content: center;
       align-items: center;
+      flex-direction: column;
+      background-color: #3572ef;
+      height: 200px;
+      padding: 10px;
+      gap: 10px;
+
+      .hero {
+        width: 100%;
+        span {
+          font-size: 1.125rem;
+          color: #fff;
+        }
+      }
 
       .search-icon-wrapper {
         display: flex;
         align-items: center;
         width: 100%;
-        height: 45px;
-        border: 1px solid #344cb7;
+        height: 40px;
+        border: 1px solid lightgray;
         border-radius: 25px;
         overflow: hidden;
         padding: 0 10px;
+        background-color: #fff;
 
         .search-input {
           border: none;
           width: 100%;
-          height: 44px;
+          height: 40px;
           padding-left: 12px;
           font-size: 14px;
           color: #1b262c;
@@ -121,11 +160,17 @@
           }
         }
 
-        .search-icon {
-          font-size: 35px;
-          cursor: pointer;
-          margin-left: 10px;
-          color: blue;
+        button {
+          background-color: transparent;
+          border: none;
+          display: flex;
+          align-items: center;
+          .search-icon {
+            font-size: 35px;
+            cursor: pointer;
+            margin-left: 10px;
+            color: blue;
+          }
         }
 
         &:focus {
@@ -136,15 +181,20 @@
 
     .skills-container {
       width: 100%;
-      margin-top: 50px;
+      margin-top: -20px;
       display: flex;
       justify-content: start;
       flex-wrap: wrap;
-      gap: 20px;
+      gap: 10px;
+      padding: 20px;
+      background-color: #f1f1f1;
+      border-top-left-radius: 25px;
+      border-top-right-radius: 25px;
       .skill {
         padding: 7px 20px;
         border: 1px solid lightgray;
         background-color: #fff;
+        text-decoration: none;
         border-radius: 25px;
         cursor: pointer;
         width: auto;
@@ -152,6 +202,20 @@
         span {
           color: #1b262c;
           font-size: 14px;
+          font-weight: 500;
+
+          &:hover {
+            color: #fff;
+          }
+        }
+
+        &:hover {
+          background-color: #344cb7;
+          color: #fff;
+
+          & span {
+            color: #fff;
+          }
         }
       }
     }

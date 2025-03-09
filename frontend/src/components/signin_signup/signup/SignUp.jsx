@@ -2,7 +2,7 @@ import "./SignUp.scss";
 import { useNavigate } from "react-router-dom";
 
 //IMAGES and  ICONS
-import logo from "../../../assets/icon/Paubra-removebg-preview.png";
+import logo from "../../../assets/icon/PAUBRA (5).png";
 import permitimg from "../../../assets/images/card.png";
 import certifimg from "../../../assets/images/certificate.png";
 import addphoto from "../../../assets/images/add-photo.png";
@@ -18,6 +18,7 @@ const SignUp = () => {
 
   //FORM CONTROL
   const [showForm, setshowForm] = useState(1);
+  const [errMessage, setErrMessage] = useState("");
   const [messageFromBackEnd, setMessageFromBackEnd] = useState({
     message: "",
     messageType: "",
@@ -58,7 +59,7 @@ const SignUp = () => {
   //handleChange
   const handleChange = (e) => {
     const { name, value } = e.target;
-
+    setErrMessage("");
     setdata((prevData) => ({
       ...prevData,
       [name]: value,
@@ -72,6 +73,11 @@ const SignUp = () => {
   //handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (data.password !== data.cPassword) {
+      setErrMessage("Password and Confirm Password do not match");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("fullname", data.fullname);
@@ -121,7 +127,6 @@ const SignUp = () => {
       }
     }
   };
-
   return (
     <>
       <div className="_signin">
@@ -253,6 +258,15 @@ const SignUp = () => {
                 <button className="btn-continue" onClick={() => setshowForm(3)}>
                   Continue
                 </button>
+
+                <div className="mobile-added-no-acc">
+                  <span>
+                    Already have an account ?{" "}
+                    <strong onClick={() => navigate("/auth/signin-client")}>
+                      Sign In
+                    </strong>
+                  </span>
+                </div>
               </div>
             )}
 
@@ -336,6 +350,12 @@ const SignUp = () => {
                 </div>
 
                 <div className="input-wrapper">
+                  <span
+                    className="error-message"
+                    style={{ color: "red", fontSize: "0.625rem" }}
+                  >
+                    {errMessage}
+                  </span>
                   <label htmlFor="password">Password</label>
                   <input
                     type="text"
@@ -375,10 +395,12 @@ const SignUp = () => {
         />
       </div>
 
-      <Toast
-        message={messageFromBackEnd.message}
-        messageType={messageFromBackEnd.messageType}
-      />
+      {showToastNotification && (
+        <Toast
+          message={messageFromBackEnd.message}
+          messageType={messageFromBackEnd.messageType}
+        />
+      )}
     </>
   );
 };

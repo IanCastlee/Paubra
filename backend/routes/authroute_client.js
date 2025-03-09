@@ -29,6 +29,7 @@ route.post(
   ]),
   register_client
 );
-route.get("/login", login_client);
+route.post("/login", login_client);
+route.post("/logout", logout_client);
 
 export default route;

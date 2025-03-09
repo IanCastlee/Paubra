@@ -2,7 +2,8 @@ import "./Signin.scss";
 import { useNavigate } from "react-router-dom";
 
 //IMAGES and  ICONS
-import logo from "../../../assets/icon/Paubra-removebg-preview.png";
+import logo from "../../../assets/icon/PAUBRA (5).png";
+import logo2 from "../../../assets/icon/PAUBRA (4).png";
 //
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { useContext, useEffect, useState } from "react";
@@ -12,6 +13,9 @@ const Signin = () => {
   const { login, currrentuser } = useContext(AuthContext);
 
   const navigate = useNavigate();
+
+  const [showLoader, setshowLoader] = useState(false);
+  const [succcesMessage, setsucccesMessage] = useState("");
 
   const [form, setform] = useState({
     username: "",
@@ -27,11 +31,21 @@ const Signin = () => {
 
   const handleSignIn = async (e) => {
     e.preventDefault();
+
+    setshowLoader(true);
+
     try {
       await login(form);
-      navigate(`/worker-profile/${currrentuser.worker_id}`);
+
+      // setTimeout(() => {
+      //   setshowLoader(false);
+      //   navigate(`/worker-profile/${currrentuser.worker_id}`);
+      // }, 3000);
     } catch (error) {
       console.log("Error: ", error);
+      setTimeout(() => {
+        setshowLoader(false);
+      }, 3000);
     }
   };
 
@@ -47,6 +61,9 @@ const Signin = () => {
           <div className="signin-right">
             <div className="signin-right-top">
               <h3>Sign In your Paubra Accout</h3>
+              <div className="mobile-added-img">
+                <img src={logo2} alt="" />
+              </div>
             </div>
             <div className="signin-rigth-form">
               <div className="input-wrapper">
@@ -72,6 +89,14 @@ const Signin = () => {
                 />
               </div>{" "}
               <button onClick={handleSignIn}>Sign In</button>
+              <div className="mobile-added-no-acc">
+                <span>
+                  Don't have an account ?{" "}
+                  <strong onClick={() => navigate("/auth/signup")}>
+                    Sign Up
+                  </strong>
+                </span>
+              </div>
             </div>
           </div>
         </div>
@@ -81,6 +106,12 @@ const Signin = () => {
           onClick={() => navigate(-1)}
         />
       </div>
+      {/* {showLoader && (
+        <div className="overlay-signin">
+          <span>Please wait...</span>
+          <span className="loader"></span>
+        </div>
+      )} */}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Navbar from "./components/navbar/Navbar";
 import Workers from "./pages/worker/Workers";
@@ -9,13 +9,17 @@ import Signup from "./pages/authlayout/signup/Signup";
 
 import SignUp from "./components/signin_signup/signup/SignUp";
 import SignIn from "./components/signin_signup/signin/SignIn";
+import Landingpage from "./pages/landingpage/Landingpage";
 
-const App = () => {
+const Layout = () => {
+  const location = useLocation();
+  const hideNavbarForThisLocation = ["/"];
   return (
-    <BrowserRouter>
-      <Navbar />
+    <>
+      {!hideNavbarForThisLocation.includes(location.pathname) && <Navbar />}
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Landingpage />} />
+        <Route path="/home" element={<Home />} />
         <Route path="/worker/:skill" element={<Workers />} />
         <Route path="/worker-profile/:userid" element={<Workerprofile />} />
 
@@ -30,6 +34,14 @@ const App = () => {
           <Route />
         </Route>
       </Routes>
+    </>
+  );
+};
+
+const App = () => {
+  return (
+    <BrowserRouter>
+      <Layout />
     </BrowserRouter>
   );
 };

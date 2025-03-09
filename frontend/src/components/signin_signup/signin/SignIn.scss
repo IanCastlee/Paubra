@@ -34,6 +34,7 @@
         color: #fff;
         text-align: center;
         word-spacing: 0.05rem;
+        font-size: 1.25rem;
       }
       button {
         background-color: transparent;
@@ -62,8 +63,12 @@
 
       .signin-right-top {
         margin-bottom: 30px;
+
         h3 {
           color: #181818;
+        }
+        .mobile-added-img {
+          display: none;
         }
       }
       .signin-rigth-form {
@@ -115,6 +120,10 @@
             background-color: #2e3c7c;
           }
         }
+
+        .mobile-added-no-acc {
+          display: none;
+        }
       }
     }
   }
@@ -126,5 +135,192 @@
     font-size: 30px;
     cursor: pointer;
     color: gray;
+  }
+}
+.overlay-signin {
+  width: 100%;
+  position: fixed;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2999;
+  .loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #fff;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+  }
+  @keyframes rotation {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+}
+
+@media (max-width: 789px) {
+  ._signin {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ece9e9;
+    z-index: 1222;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .signin-container {
+      width: 100%;
+      height: 100%;
+      border-radius: 10px;
+      display: flex;
+      overflow: hidden;
+      box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+      .siginin-left {
+        padding: 0 100px;
+        width: 50%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        background-color: #344cb7;
+        display: none;
+
+        img {
+          display: flex;
+        }
+        h1 {
+          color: #fff;
+          text-align: center;
+          word-spacing: 0.05rem;
+          font-size: 1.25rem;
+        }
+        button {
+          background-color: transparent;
+          border: 1px solid #fff;
+          cursor: pointer;
+          font-size: 14px;
+          color: #fff;
+          padding: 8px 20px;
+          border-radius: 5px;
+          margin-top: 10px;
+
+          &:hover {
+            background-color: orange;
+          }
+        }
+      }
+      .signin-right {
+        width: 100%;
+        height: 100%;
+        background-color: #fff;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 15px 20px;
+
+        .signin-right-top {
+          margin-bottom: 30px;
+          h3 {
+            color: #181818;
+            margin-bottom: 20px;
+          }
+
+          .mobile-added-img {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+
+            img {
+              height: 120px;
+              width: 120px;
+            }
+          }
+        }
+        .signin-rigth-form {
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+          width: 100%;
+
+          .input-wrapper {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: start;
+            gap: 5px;
+
+            label {
+              font-size: 14px;
+              color: #181818;
+            }
+
+            input {
+              height: 40px;
+              width: 100%;
+              padding: 0 10px;
+              font-size: 14px;
+              color: #181818;
+              border-radius: 5px;
+              border: none;
+              box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+                rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
+              &:focus {
+                outline: none;
+              }
+            }
+          }
+
+          button {
+            height: 40px;
+            background-color: #344cb7;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+            border: none;
+            font-weight: 500;
+
+            &:hover {
+              background-color: #2e3c7c;
+            }
+          }
+          .mobile-added-no-acc {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            span {
+              color: #181818;
+              font-size: 0.75rem;
+            }
+          }
+        }
+      }
+    }
+
+    .close-icon {
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      font-size: 30px;
+      cursor: pointer;
+      color: gray;
+    }
   }
 }
