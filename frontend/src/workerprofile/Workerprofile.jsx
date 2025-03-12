@@ -1,5 +1,6 @@
 import "./Workerprofile.scss";
-
+import LazyLoader from "../components/lazyLoader/LazyLoader";
+import placeholderImage from "../assets/icon/placeholder_img.png";
 // IMAGES
 import userdp from "../assets/images/360_F_622221708_Gg16ZdaNSixeaIORq9MuuT4w9VWTkYw4.jpg";
 
@@ -15,6 +16,7 @@ import { TfiComment } from "react-icons/tfi";
 import { LiaUserEditSolid } from "react-icons/lia";
 import { MdOutlineSaveAlt } from "react-icons/md";
 import { AiOutlineLoading3Quarters } from "react-icons/ai";
+import { BiSolidMessageRoundedDetail } from "react-icons/bi";
 
 // DUMMY DATA
 import { projects } from "../dummyproj";
@@ -22,6 +24,7 @@ import { useContext, useEffect, useRef, useState } from "react";
 import { AuthContext } from "../context/Authcontext";
 import axiosInstance from "../axios";
 import { useParams } from "react-router-dom";
+import ChatSystem from "../components/chatSystem/ChatSystem";
 
 const Workerprofile = () => {
   const { currrentuser, setcurrrentuser } = useContext(AuthContext);
@@ -29,6 +32,7 @@ const Workerprofile = () => {
 
   //
   const [visitWorker, setvisitWorker] = useState([]);
+  const [closeChat, setcloseChat] = useState(false);
 
   console.log("currrentuser : ", currrentuser && currrentuser.worker_id);
   console.log("Worker ID  : ", _worker_id);
@@ -143,355 +147,378 @@ const Workerprofile = () => {
   }, []);
 
   return (
-    <div className="worker-profile">
-      <div className={`worker-profile-top ${fixed ? "scroll" : ""}`}>
-        <div className="reviews-h1-container">
-          <div className="main-skill-wrapper">
-            <h1>
-              {visitWorker.main_skill && visitWorker.main_skill.toUpperCase()}
-            </h1>
+    <>
+      <div className="worker-profile">
+        <div className={`worker-profile-top ${fixed ? "scroll" : ""}`}>
+          <div className="reviews-h1-container">
+            <div className="main-skill-wrapper">
+              <h1>
+                {visitWorker.main_skill && visitWorker.main_skill.toUpperCase()}
+              </h1>
 
-            <div className="stars">
-              <span>Reviews :</span>
-              <MdStar className="star-icon" />
-              <MdStar className="star-icon" />
-              <MdStar className="star-icon" />
-              <MdStar className="star-icon" />
-              <MdStar className="star-icon" />
+              <div className="stars">
+                <span>Reviews :</span>
+                <MdStar className="star-icon" />
+                <MdStar className="star-icon" />
+                <MdStar className="star-icon" />
+                <MdStar className="star-icon" />
+                <MdStar className="star-icon" />
+              </div>
+
+              <div className="button-wrapper-top">
+                <button>Add Review</button>
+                <button
+                  className="btn-message"
+                  onClick={() => setcloseChat(true)}
+                >
+                  <BiSolidMessageRoundedDetail className="message-icon" />
+                  Message
+                </button>
+              </div>
             </div>
 
-            <button>Add Review</button>
+            {otherSkill && (
+              <div className="other-skills-wrapper">
+                <h3>{`Other Skill${otherSkill.length > 0 ? "s" : ""}`}</h3>
+                {otherSkill &&
+                  otherSkill.map((os, index) => <p key={index}>{os.trim()}</p>)}
+              </div>
+            )}
+          </div>
+
+          <img
+            className="img-pp"
+            alt="User Profile"
+            src={`http://localhost:8080/upload/${visitWorker.profile_pic}`}
+          />
+        </div>
+        <div className={`worker-profile-container ${fixed ? "scroll" : ""}`}>
+          <div className="personal-info">
+            <h3>{visitWorker.fullname}</h3>
+            <span>{visitWorker.address}</span>
+            <span>Gender: {visitWorker.gender}</span>
+            <span>Age: {visitWorker.age}</span>
           </div>
 
           {otherSkill && (
-            <div className="other-skills-wrapper">
+            <div className="other-skill">
               <h3>{`Other Skill${otherSkill.length > 0 ? "s" : ""}`}</h3>
+
               {otherSkill &&
-                otherSkill.map((os, index) => <p key={index}>{os.trim()}</p>)}
+                otherSkill.map((os, index) => <p key={index}>{os}</p>)}
             </div>
           )}
-        </div>
 
-        <img
-          className="img-pp"
-          alt="User Profile"
-          src={`http://localhost:8080/upload/${visitWorker.profile_pic}`}
-        />
-      </div>
-      <div className={`worker-profile-container ${fixed ? "scroll" : ""}`}>
-        <div className="personal-info">
-          <h3>{visitWorker.fullname}</h3>
-          <span>{visitWorker.address}</span>
-          <span>Gender: {visitWorker.gender}</span>
-          <span>Age: {visitWorker.age}</span>
-        </div>
-
-        {otherSkill && (
-          <div className="other-skill">
-            <h3>{`Other Skill${otherSkill.length > 0 ? "s" : ""}`}</h3>
-
-            {otherSkill &&
-              otherSkill.map((os, index) => <p key={index}>{os}</p>)}
-          </div>
-        )}
-
-        <div className="about-worker">
-          <textarea
-            onChange={(e) => setaboutme(e.target.value)}
-            value={aboutme}
-            readOnly={showSendAboutBtn ? false : true}
-            placeholder="Add info about your self or related to your skill"
-          ></textarea>
-          {currrentuser &&
-          currrentuser.worker_id == _worker_id.userid &&
-          showEditAboutBtn ? (
-            <LiaUserEditSolid
-              title="Edit"
-              className="edit-icon"
-              onClick={() => {
-                setshowSendAboutBtn(true);
-                setshowEditAboutBtn(false);
-              }}
-            />
-          ) : showSendAboutBtn ? (
-            showLoader ? (
-              <AiOutlineLoading3Quarters className="loader" />
-            ) : (
-              <MdOutlineSaveAlt
-                title="Save"
-                style={{ color: "green" }}
+          <div className="about-worker">
+            <textarea
+              onChange={(e) => setaboutme(e.target.value)}
+              value={aboutme}
+              readOnly={showSendAboutBtn ? false : true}
+              placeholder="Add info about your self or related to your skill"
+            ></textarea>
+            {currrentuser &&
+            currrentuser.worker_id == _worker_id.userid &&
+            showEditAboutBtn ? (
+              <LiaUserEditSolid
+                title="Edit"
                 className="edit-icon"
-                onClick={handleUpdateAboutMe}
+                onClick={() => {
+                  setshowSendAboutBtn(true);
+                  setshowEditAboutBtn(false);
+                }}
               />
-            )
-          ) : null}
+            ) : showSendAboutBtn ? (
+              showLoader ? (
+                <AiOutlineLoading3Quarters className="loader" />
+              ) : (
+                <MdOutlineSaveAlt
+                  title="Save"
+                  style={{ color: "green" }}
+                  className="edit-icon"
+                  onClick={handleUpdateAboutMe}
+                />
+              )
+            ) : null}
+          </div>
         </div>
-      </div>
-      <div
-        className={`worker-profile-navbar-container ${fixed ? "fixedtop" : ""}`}
-      >
-        {" "}
-        {/* ref={scrollRef} */}
-        <div className={`worker-profile-navbar ${fixed ? "fixedtop" : ""}`}>
-          <ul className={fixed ? "fixedtop" : ""}>
-            <li onClick={_showProjects}>
-              <TfiHummer />
-              Projects
-            </li>
-            <li onClick={_showReviews}>
-              <GoComment /> Reviews
-            </li>
-            <li onClick={_showConnected}>
-              <RiUserShared2Line /> Connected
-            </li>
-          </ul>
-          {fixed && (
-            <FaAngleDown
-              className="down-icon"
-              onClick={() => setfixed(false)}
-            />
-          )}{" "}
-        </div>
-        <div className="worker-profile-navbar-container-content">
-          <div className="content">
-            <h3>
-              {showProject
-                ? "PROJECTS"
-                : showReviews
-                ? "REVIEWS"
-                : showConnected
-                ? "CONNECTED"
-                : ""}
-            </h3>
+        <div
+          className={`worker-profile-navbar-container ${
+            fixed ? "fixedtop" : ""
+          }`}
+        >
+          {" "}
+          {/* ref={scrollRef} */}
+          <div className={`worker-profile-navbar ${fixed ? "fixedtop" : ""}`}>
+            <ul className={fixed ? "fixedtop" : ""}>
+              <li onClick={_showProjects}>
+                <TfiHummer />
+                Projects
+              </li>
+              <li onClick={_showReviews}>
+                <GoComment /> Reviews
+              </li>
+              <li onClick={_showConnected}>
+                <RiUserShared2Line /> Connected
+              </li>
+            </ul>
+            {fixed && (
+              <FaAngleDown
+                className="down-icon"
+                onClick={() => setfixed(false)}
+              />
+            )}{" "}
+            <button className="btn-message" onClick={() => setcloseChat(true)}>
+              <BiSolidMessageRoundedDetail className="message-icon" />
+              Message
+            </button>
+          </div>
+          <div className="worker-profile-navbar-container-content">
+            <div className="content">
+              <h3>
+                {showProject
+                  ? "PROJECTS"
+                  : showReviews
+                  ? "REVIEWS"
+                  : showConnected
+                  ? "CONNECTED"
+                  : ""}
+              </h3>
 
-            {showProject && (
-              <div className="user-projects">
-                {projects.map((data) => (
-                  <div className="card" key={data.id}>
-                    <div className="username-desc">
-                      <div className="username-datepost">
-                        <h6>{data.postby}</h6>
-                        <p>January 1, 2025</p>
+              {showProject && (
+                <div className="user-projects">
+                  {projects.map((data) => (
+                    <div className="card" key={data.id}>
+                      <div className="username-desc">
+                        <div className="username-datepost">
+                          <h6>{data.postby}</h6>
+                          <p>January 1, 2025</p>
+                        </div>
+                        <p>{data.desc}</p>
                       </div>
-                      <p>{data.desc}</p>
-                    </div>
-                    <div className="img-wrapper">
-                      <img src={data.img} alt="Project" />
-                    </div>
-
-                    <div className="bot">
-                      <div className="icon-like">
-                        <SlLike />
-                        <span>9</span>
-                      </div>
-
-                      <div className="icon-dlike">
-                        <SlDislike />
-                        <span>3</span>
-                      </div>
-                      <div className="icon-comment">
-                        <TfiComment />
-                        <span>3</span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-
-            {showReviews && (
-              <div className="user-reviews">
-                <div className="review-card-container">
-                  <div className="review-cardd">
-                    <div className="user-profile-name">
-                      <img src={userdp} alt="User" />
-                      <span>Name</span>
-                    </div>
-
-                    <div className="star-rate-date">
-                      <div className="stars">
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
+                      <div className="img-wrapper">
+                        <LazyLoader
+                          src={data.img}
+                          placeholder={placeholderImage}
+                          alt="Lazy Loaded Image"
+                        />
                       </div>
 
-                      <p>01/03/25</p>
-                    </div>
+                      <div className="bot">
+                        <div className="icon-like">
+                          <SlLike />
+                          <span>9</span>
+                        </div>
 
-                    <div className="review">
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Facilis deserunt tempore voluptates.
-                      </p>
+                        <div className="icon-dlike">
+                          <SlDislike />
+                          <span>3</span>
+                        </div>
+                        <div className="icon-comment">
+                          <TfiComment />
+                          <span>3</span>
+                        </div>
+                      </div>
                     </div>
-                  </div>
+                  ))}
+                </div>
+              )}
 
-                  <div className="review-cardd">
-                    <div className="user-profile-name">
-                      <img src={userdp} alt="User" />
-                      <span>Name</span>
-                    </div>
-
-                    <div className="star-rate-date">
-                      <div className="stars">
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
+              {showReviews && (
+                <div className="user-reviews">
+                  <div className="review-card-container">
+                    <div className="review-cardd">
+                      <div className="user-profile-name">
+                        <img src={userdp} alt="User" />
+                        <span>Name</span>
                       </div>
 
-                      <p>01/03/25</p>
-                    </div>
+                      <div className="star-rate-date">
+                        <div className="stars">
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                        </div>
 
-                    <div className="review">
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Facilis deserunt tempore voluptates.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="review-cardd">
-                    <div className="user-profile-name">
-                      <img src={userdp} alt="User" />
-                      <span>Name</span>
-                    </div>
-
-                    <div className="star-rate-date">
-                      <div className="stars">
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
+                        <p>01/03/25</p>
                       </div>
 
-                      <p>01/03/25</p>
+                      <div className="review">
+                        <p>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Facilis deserunt tempore voluptates.
+                        </p>
+                      </div>
                     </div>
 
-                    <div className="review">
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Facilis deserunt tempore voluptates.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="review-cardd">
-                    <div className="user-profile-name">
-                      <img src={userdp} alt="User" />
-                      <span>Name</span>
-                    </div>
-
-                    <div className="star-rate-date">
-                      <div className="stars">
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
+                    <div className="review-cardd">
+                      <div className="user-profile-name">
+                        <img src={userdp} alt="User" />
+                        <span>Name</span>
                       </div>
 
-                      <p>01/03/25</p>
-                    </div>
+                      <div className="star-rate-date">
+                        <div className="stars">
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                        </div>
 
-                    <div className="review">
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Facilis deserunt tempore voluptates.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="review-cardd">
-                    <div className="user-profile-name">
-                      <img src={userdp} alt="User" />
-                      <span>Name</span>
-                    </div>
-
-                    <div className="star-rate-date">
-                      <div className="stars">
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
+                        <p>01/03/25</p>
                       </div>
 
-                      <p>01/03/25</p>
+                      <div className="review">
+                        <p>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Facilis deserunt tempore voluptates.
+                        </p>
+                      </div>
                     </div>
-
-                    <div className="review">
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Facilis deserunt tempore voluptates.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="review-cardd">
-                    <div className="user-profile-name">
-                      <img src={userdp} alt="User" />
-                      <span>Name</span>
-                    </div>
-
-                    <div className="star-rate-date">
-                      <div className="stars">
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
+                    <div className="review-cardd">
+                      <div className="user-profile-name">
+                        <img src={userdp} alt="User" />
+                        <span>Name</span>
                       </div>
 
-                      <p>01/03/25</p>
-                    </div>
+                      <div className="star-rate-date">
+                        <div className="stars">
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                        </div>
 
-                    <div className="review">
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Facilis deserunt tempore voluptates.
-                      </p>
-                    </div>
-                  </div>
-                  <div className="review-cardd">
-                    <div className="user-profile-name">
-                      <img src={userdp} alt="User" />
-                      <span>Name</span>
-                    </div>
-
-                    <div className="star-rate-date">
-                      <div className="stars">
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
-                        <MdStar className="star-icon" />
+                        <p>01/03/25</p>
                       </div>
 
-                      <p>01/03/25</p>
+                      <div className="review">
+                        <p>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Facilis deserunt tempore voluptates.
+                        </p>
+                      </div>
                     </div>
+                    <div className="review-cardd">
+                      <div className="user-profile-name">
+                        <img src={userdp} alt="User" />
+                        <span>Name</span>
+                      </div>
 
-                    <div className="review">
-                      <p>
-                        Lorem ipsum dolor sit amet consectetur
-                        adipisicierrerererettgg rerererere5ng elit. Facilis
-                        deserunt tempore voluptates.
-                      </p>
+                      <div className="star-rate-date">
+                        <div className="stars">
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                        </div>
+
+                        <p>01/03/25</p>
+                      </div>
+
+                      <div className="review">
+                        <p>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Facilis deserunt tempore voluptates.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="review-cardd">
+                      <div className="user-profile-name">
+                        <img src={userdp} alt="User" />
+                        <span>Name</span>
+                      </div>
+
+                      <div className="star-rate-date">
+                        <div className="stars">
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                        </div>
+
+                        <p>01/03/25</p>
+                      </div>
+
+                      <div className="review">
+                        <p>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Facilis deserunt tempore voluptates.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="review-cardd">
+                      <div className="user-profile-name">
+                        <img src={userdp} alt="User" />
+                        <span>Name</span>
+                      </div>
+
+                      <div className="star-rate-date">
+                        <div className="stars">
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                        </div>
+
+                        <p>01/03/25</p>
+                      </div>
+
+                      <div className="review">
+                        <p>
+                          Lorem ipsum dolor sit amet consectetur adipisicing
+                          elit. Facilis deserunt tempore voluptates.
+                        </p>
+                      </div>
+                    </div>
+                    <div className="review-cardd">
+                      <div className="user-profile-name">
+                        <img src={userdp} alt="User" />
+                        <span>Name</span>
+                      </div>
+
+                      <div className="star-rate-date">
+                        <div className="stars">
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                          <MdStar className="star-icon" />
+                        </div>
+
+                        <p>01/03/25</p>
+                      </div>
+
+                      <div className="review">
+                        <p>
+                          Lorem ipsum dolor sit amet consectetur
+                          adipisicierrerererettgg rerererere5ng elit. Facilis
+                          deserunt tempore voluptates.
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
-            {showConnected && (
-              <div className="user-connected">
-                <h1>CONNECTED</h1>
-              </div>
-            )}
+              {showConnected && (
+                <div className="user-connected">
+                  <h1>CONNECTED</h1>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+
+      {closeChat && <ChatSystem closeChat={() => setcloseChat(false)} />}
+    </>
   );
 };
 

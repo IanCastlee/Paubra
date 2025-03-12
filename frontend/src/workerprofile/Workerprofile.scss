@@ -39,16 +39,23 @@
           }
         }
 
-        button {
-          background-color: transparent;
-          border-radius: 25px;
-          border: 1px solid #fff;
-          font-size: 0.875rem;
-          color: #fff;
-          cursor: pointer;
-          padding: 5px 15px;
-          margin-top: 5px;
-          max-width: fit-content;
+        .button-wrapper-top {
+          display: flex;
+          button {
+            background-color: transparent;
+            border-radius: 25px;
+            border: 1px solid #fff;
+            font-size: 0.875rem;
+            color: #fff;
+            cursor: pointer;
+            padding: 5px 15px;
+            margin-top: 5px;
+            max-width: fit-content;
+          }
+
+          .btn-message {
+            display: none;
+          }
         }
       }
 
@@ -222,6 +229,29 @@
         padding: 0 100px;
         margin-top: 0;
       }
+
+      .btn-message {
+        background-color: #3572ef;
+        color: #fff;
+        font-size: 0.875rem;
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        padding: 5px 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .message-icon {
+          color: #f1f1f1;
+          font-size: 0.875rem;
+          margin-right: 5px;
+        }
+
+        &:hover {
+          background-color: #0b2a69;
+        }
+      }
     }
 
     .worker-profile-navbar-container-content {
@@ -285,10 +315,10 @@
               width: 100%;
               height: 400px;
 
-              img {
-                width: 100%;
-                height: 100%;
-              }
+              // img {
+              //   width: 100%;
+              //   height: 100%;
+              // }
             }
 
             .bot {
@@ -435,16 +465,48 @@
             }
           }
 
-          button {
-            background-color: transparent;
-            border-radius: 25px;
-            border: 1px solid #fff;
-            font-size: 0.875rem;
-            color: #fff;
-            cursor: pointer;
-            padding: 5px 15px;
-            margin-top: 5px;
-            max-width: fit-content;
+          .button-wrapper-top {
+            display: flex;
+            width: 100%;
+            justify-content: end;
+            gap: 5px;
+            button {
+              background-color: transparent;
+              border-radius: 25px;
+              border: 1px solid #fff;
+              font-size: 0.875rem;
+              color: #fff;
+              cursor: pointer;
+              padding: 3px 10px;
+              margin-top: 5px;
+              max-width: fit-content;
+              white-space: nowrap;
+            }
+
+            .btn-message {
+              display: flex;
+              background-color: #3572ef;
+              color: #fff;
+              font-size: 0.875rem;
+              font-weight: 500;
+              cursor: pointer;
+              border: none;
+              border-radius: 25px;
+              padding: 3px 10px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              border: 1px solid #fff;
+              .message-icon {
+                color: #f1f1f1;
+                font-size: 0.875rem;
+                margin-right: 5px;
+              }
+
+              &:hover {
+                background-color: #0b2a69;
+              }
+            }
           }
         }
 
@@ -591,6 +653,9 @@
           padding: 0 15px;
           border-top: 1px solid lightgray;
         }
+        .btn-message {
+          display: none;
+        }
       }
 
       .worker-profile-navbar-container-content {
@@ -651,10 +716,10 @@
                 width: 100%;
                 height: 400px;
 
-                img {
-                  width: 100%;
-                  height: 100%;
-                }
+                // img {
+                //   width: 100%;
+                //   height: 100%;
+                // }
               }
 
               .bot {
