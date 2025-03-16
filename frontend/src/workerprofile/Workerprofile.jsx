@@ -25,17 +25,23 @@ import { AuthContext } from "../context/Authcontext";
 import axiosInstance from "../axios";
 import { useParams } from "react-router-dom";
 import ChatSystem from "../components/chatSystem/ChatSystem";
+import MessageToaster from "../components/messageToaster/MessageToaster";
+import { ClientContext } from "../context/Clientcontext";
 
 const Workerprofile = () => {
-  const { currrentuser, setcurrrentuser } = useContext(AuthContext);
+  const { currrentuser } = useContext(AuthContext);
+  const { currentClientID } = useContext(ClientContext);
   const _worker_id = useParams();
 
-  //
+  console.log("CurrentUser INOFO : ", currrentuser);
+
   const [visitWorker, setvisitWorker] = useState([]);
   const [closeChat, setcloseChat] = useState(false);
+  const [messageToaster, setmessageToaster] = useState(false);
 
-  console.log("currrentuser : ", currrentuser && currrentuser.worker_id);
-  console.log("Worker ID  : ", _worker_id);
+  setTimeout(() => {
+    setmessageToaster(false);
+  }, 5000);
 
   // USEREF
   const scrollRef = useRef(null);
@@ -105,34 +111,34 @@ const Workerprofile = () => {
   };
 
   //FETCH CURRENT USER DATA FROM DB
+  const fetchCurrentUserData = () => {
+    if (_worker_id === "") {
+      console.log("Empty worker ID");
+      return;
+    }
+    axiosInstance
+      .get(`worker/worker-info/${_worker_id.userid}`)
+      .then((response) => {
+        setvisitWorker(response.data);
+        setshowSendAboutBtn(false);
+      })
+      .catch((error) => {
+        console.log("Full Error Object:", error);
+        console.log("Error Response:", error.response);
+        console.log("Error Data:", error.response?.data);
+        console.log(
+          "Error Message:",
+          error.response?.data?.error || "Something went wrong!"
+        );
+      });
+  };
   useEffect(() => {
-    const fetchCurrentUserData = () => {
-      axiosInstance
-        .get(`worker/worker-info/${_worker_id.userid}`)
-        .then((response) => {
-          console.log(response.data);
-          setvisitWorker(response.data);
-          setshowSendAboutBtn(false);
-        })
-        .catch((error) => {
-          console.log("Full Error Object:", error);
-          console.log("Error Response:", error.response);
-          console.log("Error Data:", error.response?.data);
-          console.log(
-            "Error Message:",
-            error.response?.data?.error || "Something went wrong!"
-          );
-        });
-    };
-
     fetchCurrentUserData();
   }, []);
 
   //get length of other_skill
   const otherSkill =
     visitWorker.other_skill && JSON.parse(visitWorker.other_skill);
-
-  console.log(visitWorker);
 
   useEffect(() => {
     if (currrentuser && currrentuser.worker_id == _worker_id.userid) {
@@ -169,7 +175,13 @@ const Workerprofile = () => {
                 <button>Add Review</button>
                 <button
                   className="btn-message"
-                  onClick={() => setcloseChat(true)}
+                  onClick={() =>
+                    currrentuser && currrentuser !== null
+                      ? setcloseChat(true)
+                      : currentClientID === null
+                      ? setmessageToaster(true)
+                      : setcloseChat(true)
+                  }
                 >
                   <BiSolidMessageRoundedDetail className="message-icon" />
                   Message
@@ -180,8 +192,13 @@ const Workerprofile = () => {
             {otherSkill && (
               <div className="other-skills-wrapper">
                 <h3>{`Other Skill${otherSkill.length > 0 ? "s" : ""}`}</h3>
-                {otherSkill &&
-                  otherSkill.map((os, index) => <p key={index}>{os.trim()}</p>)}
+
+                <div className="other-skill-card">
+                  {otherSkill &&
+                    otherSkill.map((os, index) => (
+                      <p key={index}>{os.trim()}</p>
+                    ))}
+                </div>
               </div>
             )}
           </div>
@@ -204,8 +221,10 @@ const Workerprofile = () => {
             <div className="other-skill">
               <h3>{`Other Skill${otherSkill.length > 0 ? "s" : ""}`}</h3>
 
-              {otherSkill &&
-                otherSkill.map((os, index) => <p key={index}>{os}</p>)}
+              <div className="other-skill-wrapper">
+                {otherSkill &&
+                  otherSkill.map((os, index) => <p key={index}>{os}</p>)}
+              </div>
             </div>
           )}
 
@@ -267,10 +286,22 @@ const Workerprofile = () => {
                 onClick={() => setfixed(false)}
               />
             )}{" "}
-            <button className="btn-message" onClick={() => setcloseChat(true)}>
+            <button
+              className="btn-message"
+              onClick={() =>
+                currrentuser && currrentuser !== null
+                  ? setcloseChat(true)
+                  : currentClientID === null
+                  ? setmessageToaster(true)
+                  : setcloseChat(true)
+              }
+            >
               <BiSolidMessageRoundedDetail className="message-icon" />
               Message
             </button>
+            {messageToaster && (
+              <MessageToaster message="You need to sign in first" />
+            )}
           </div>
           <div className="worker-profile-navbar-container-content">
             <div className="content">
@@ -517,7 +548,14 @@ const Workerprofile = () => {
         </div>
       </div>
 
-      {closeChat && <ChatSystem closeChat={() => setcloseChat(false)} />}
+      {closeChat && (
+        <ChatSystem
+          closeChat={() => setcloseChat(false)}
+          workerIDidPresent={currrentuser}
+          currentClientID={currentClientID}
+          currentWorkerID={_worker_id.userid}
+        />
+      )}
     </>
   );
 };

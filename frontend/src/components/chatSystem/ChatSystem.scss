@@ -10,8 +10,123 @@
   -moz-box-shadow: -6px 0px 8px -2px rgba(0, 0, 0, 0.75);
   z-index: 2999;
   border-top-left-radius: 6px;
-  .container {
+  display: flex;
+
+  .show {
+    width: 600px;
+  }
+
+  .conversation {
     width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    padding: 0 20px;
+
+    .top {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 0;
+      padding-right: 25%;
+      .toggle-icon {
+        font-size: 20px;
+        cursor: pointer;
+        color: #302a2a;
+      }
+
+      h5 {
+        color: #302a2a;
+      }
+    }
+    .search-icon-wrapper {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 40px;
+      border: 1px solid lightgray;
+      border-radius: 25px;
+      overflow: hidden;
+      padding: 20px 10px;
+      background-color: #fff;
+
+      .search-input {
+        border: none;
+        width: 100%;
+        height: 40px;
+        padding-left: 12px;
+        font-size: 14px;
+        color: #1b262c;
+
+        &:focus {
+          outline: none;
+        }
+      }
+
+      button {
+        background-color: transparent;
+        border: none;
+        display: flex;
+        align-items: center;
+        .search-icon {
+          font-size: 35px;
+          cursor: pointer;
+          margin-left: 10px;
+          color: blue;
+        }
+      }
+
+      &:focus {
+        border: 2px solid #344cb7;
+      }
+    }
+    .conversation-list {
+      width: 100%;
+      margin-top: 25px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+
+      .list-wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 5px;
+        cursor: pointer;
+        width: 100%;
+        padding-right: 20px;
+
+        .pppic {
+          border-radius: 50%;
+          width: 35px;
+          height: 35px;
+          object-fit: cover;
+        }
+
+        .name-message {
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          .name {
+            color: #302a2a;
+            font-weight: 500;
+            font-size: 14px;
+          }
+          .message {
+            font-size: 0.75rem;
+            font-weight: 300;
+            color: #383737;
+            width: 100%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+          }
+        }
+      }
+    }
+  }
+  .container {
+    width: 400px;
     height: 100vh;
     position: relative;
 
@@ -22,11 +137,14 @@
       justify-content: space-between;
       padding: 10px;
       border-bottom: 1px solid rgb(202, 191, 191);
-      posi .left {
-        span {
-          font-size: 18px;
+      .left {
+        .btn-conversation {
+          font-size: 1rem;
           font-weight: 500;
           color: #242121;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
         }
       }
 

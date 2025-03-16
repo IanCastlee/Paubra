@@ -69,11 +69,17 @@
           font-size: 1.125rem;
           color: #fff;
         }
-        p {
-          font-size: 0.875rem;
-          color: #f1f1f1;
-          margin-bottom: 3px;
-          font-weight: 500;
+
+        .other-skill-card {
+          display: flex;
+          flex-wrap: wrap;
+          p {
+            font-size: 0.875rem;
+            color: #f1f1f1;
+            margin-bottom: 3px;
+            font-weight: 500;
+            margin-left: 10px;
+          }
         }
       }
     }
@@ -582,6 +588,17 @@
         h3 {
           font-size: 1rem;
           color: #242121;
+        }
+
+        .other-skill-wrapper {
+          display: flex;
+          flex-wrap: wrap;
+
+          p {
+            font-size: 0.75rem;
+            color: #242121;
+            margin-right: 10px;
+          }
         }
       }
 

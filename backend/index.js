@@ -8,6 +8,7 @@ const app = express();
 import authRoutes from "./routes/authroute.js";
 import workerRoutes from "./routes/worker_routes.js";
 import authroutes_client from "./routes/authroute_client.js";
+import messageRoutes from "./routes/message.js";
 
 // MIDDLEWARES
 app.use(
@@ -30,6 +31,9 @@ app.use("/api/worker", workerRoutes);
 
 //ROUTES CLIENT
 app.use("/api/auth-client", authroutes_client);
+
+//ROUTES SEND MESSAGE
+app.use("/api/message", messageRoutes);
 
 const port = 8080;
 app.listen(port, () => {

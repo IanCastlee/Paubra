@@ -8,17 +8,20 @@ export const AuthContextProvider = ({ children }) => {
   const [currrentuser, setcurrrentuser] = useState(
     JSON.parse(localStorage.getItem("userInfo") || null)
   );
+
+  const [loading, setLoading] = useState(false);
+
   const [showLoader, setshowLoader] = useState(false);
   const login = async (form) => {
     setshowLoader(true);
 
     const res = await axiosInstance.post("auth/login", form);
 
-    setcurrrentuser(res.data);
+    setcurrrentuser(res.data.otherInfo);
 
     setTimeout(() => {
       setshowLoader(false);
-      window.location.href = `/worker-profile/${currrentuser.worker_id}`;
+      window.location.href = `/worker-profile/${res.data.worker_id}`;
     }, 3000);
   };
 
@@ -26,16 +29,41 @@ export const AuthContextProvider = ({ children }) => {
     localStorage.setItem("userInfo", JSON.stringify(currrentuser));
   }, [currrentuser]);
 
+  //handle logout
+  const logoutWorker = () => {
+    setLoading(true);
+
+    try {
+      const res = axiosInstance.post("auth/logout");
+      window.localStorage.removeItem("userInfo");
+      console.log(res.data);
+      setcurrrentuser(null);
+
+      setTimeout(() => {
+        setLoading(false);
+        window.location.href = "/";
+      }, 3000);
+      console.log(res.data);
+    } catch (error) {
+      console.log("Error : ", error);
+    }
+  };
+
   return (
-    <AuthContext.Provider value={{ currrentuser, setcurrrentuser, login }}>
+    <AuthContext.Provider
+      value={{ currrentuser, setcurrrentuser, login, logoutWorker }}
+    >
       {children}
 
-      {showLoader && (
-        <div className="overlay-signin">
-          <span>Please wait...</span>
-          <span className="loader"></span>
-        </div>
-      )}
+      {showLoader ||
+        (loading && (
+          <div className="overlay-signin">
+            <span>
+              {loading ? "Logging out..." : showLoader ? "Please wait..." : ""}
+            </span>
+            <span className="loader"></span>
+          </div>
+        ))}
     </AuthContext.Provider>
   );
 };

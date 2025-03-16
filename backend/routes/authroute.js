@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { login, logout, register } from "../controller/auth.js";
+import { login, logoutWorker, register } from "../controller/auth.js";
 
 const route = express.Router();
 
@@ -29,6 +29,6 @@ route.post(
 );
 
 route.post("/login", login);
-route.post("/logout", logout);
+route.post("/logout", logoutWorker);
 
 export default route;

@@ -1,0 +1,36 @@
+.message-toaster {
+  width: fit-content;
+  padding: 5px 15px;
+  position: fixed;
+  border-radius: 3px;
+  z-index: 2999;
+  top: 120px;
+  left: 45%;
+  transform: translate(-50%, -50%);
+  background-color: blue;
+
+  p {
+    color: #fff;
+    font-size: 0.75rem;
+  }
+}
+
+@media (max-width: 789px) {
+  .message-toaster {
+    width: fit-content;
+    padding: 5px 15px;
+    position: fixed;
+    border-radius: 3px;
+    z-index: 2999;
+    top: 92%;
+    left: 30%;
+    transform: translate(-50%, -50%);
+
+    animation: showtoaster 0.8s ease-in-out forwards;
+
+    p {
+      color: #fff;
+      font-size: 0.75rem;
+    }
+  }
+}

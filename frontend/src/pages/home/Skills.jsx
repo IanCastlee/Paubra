@@ -43,20 +43,6 @@ const Skills = () => {
   return (
     <div className="skills">
       <div className="search-container">
-        {/* <div className="hero">
-          {showFirstHint ? (
-            <span>
-              <strong>Hint:</strong> Browse worker profiles and read reviews
-              from previous clients to ensure you hire the right person for the
-              job.
-            </span>
-          ) : (
-            <span>
-              <strong>Hint:</strong> You can view a worker's previous projects
-              to ensure they have the skills and experience needed for the job.
-            </span>
-          )}
-        </div> */}
         <div className="search-icon-wrapper">
           <input
             type="text"

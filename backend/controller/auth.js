@@ -76,15 +76,23 @@ export const login = (req, res) => {
     }
 
     const token = jwt.sign({ id: data[0].worker_id }, "secretkey");
-    const { password, ...others } = data[0];
+    const { password, worker_id, ...others } = data[0];
 
     res
       .cookie("accesToken", token, {
         httpOnly: true,
       })
       .status(200)
-      .json(others);
+      .json({ worker_id, otherInfo: others });
   });
 };
 
-export const logout = (req, res) => {};
+export const logoutWorker = (req, res) => {
+  res
+    .clearCookie("accesToken", {
+      secure: true,
+      sameSite: "none",
+    })
+    .status(200)
+    .json("Worker has been logged out.");
+};

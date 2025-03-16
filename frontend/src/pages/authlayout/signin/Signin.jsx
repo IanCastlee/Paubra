@@ -36,11 +36,6 @@ const Signin = () => {
 
     try {
       await login(form);
-
-      // setTimeout(() => {
-      //   setshowLoader(false);
-      //   navigate(`/worker-profile/${currrentuser.worker_id}`);
-      // }, 3000);
     } catch (error) {
       console.log("Error: ", error);
       setTimeout(() => {

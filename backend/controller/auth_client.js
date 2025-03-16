@@ -78,14 +78,14 @@ export const login_client = (req, res) => {
     }
 
     const token = jwt.sign({ id: result[0].client_id }, "client_secretkey");
-    const { password, ...others } = result[0];
+    const { password, client_id, ...others } = result[0];
 
     res
       .cookie("clientAccesToken", token, {
         httpOnly: true,
       })
       .status(200)
-      .json(others);
+      .json({ client_id, otherDetails: others });
   });
 };
 

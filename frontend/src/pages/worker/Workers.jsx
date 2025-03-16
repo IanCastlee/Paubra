@@ -79,7 +79,10 @@ const Workers = () => {
             <span className="loader"></span>
           ) : data.length > 0 ? (
             data.map((d) => (
-              <div className={`card  ${rowNumber === 1 ? "one" : "two"} `}>
+              <div
+                key={d.worker_id}
+                className={`card  ${rowNumber === 1 ? "one" : "two"} `}
+              >
                 <div className={`top  ${rowNumber === 1 ? "one" : "two"} `}>
                   <img
                     src={`http://localhost:8080/upload/${d.profile_pic}`}
