@@ -19,6 +19,9 @@ const Navbar = () => {
   const { currentClient, logout, currentClientID } = useContext(ClientContext);
   const { currrentuser, logoutWorker } = useContext(AuthContext);
 
+  console.log("currentClient", currentClient);
+  console.log("currrentuser", currrentuser);
+
   const navigate = useNavigate();
   const [showSidebar, setShowSidebar] = useState(false);
   const [showDropDown, setShowDropdown] = useState(false);
@@ -38,7 +41,7 @@ const Navbar = () => {
           <li>Notification</li>
           <li onClick={() => setshowChat(true)}>Message</li>
 
-          {currrentuser === null && (
+          {currrentuser === null && currentClient === null && (
             <li onClick={() => navigate("auth/signup")}>Join as a Worker</li>
           )}
           {currentClientID !== null && (

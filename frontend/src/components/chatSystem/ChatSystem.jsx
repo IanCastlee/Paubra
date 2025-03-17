@@ -1,7 +1,7 @@
 import "./ChatSystem.scss";
 import { motion } from "framer-motion";
 //ICONS
-import { CgClose } from "react-icons/cg";
+import { CgClose, CgLogIn } from "react-icons/cg";
 import { IoSendSharp } from "react-icons/io5";
 import { MdOutlineKeyboardArrowLeft } from "react-icons/md";
 import { IoSearchOutline } from "react-icons/io5";
@@ -12,6 +12,7 @@ import { useContext, useEffect, useState } from "react";
 import axiosInstance from "../../axios";
 import { AuthContext } from "../../context/Authcontext";
 import { ClientContext } from "../../context/Clientcontext";
+import { TokenContext } from "../../context/TokenContext";
 const ChatSystem = ({
   closeChat,
   currentClientID,
@@ -20,6 +21,9 @@ const ChatSystem = ({
 }) => {
   const { currentClient } = useContext(ClientContext);
   const { currrentuser } = useContext(AuthContext);
+  const { setExpiredToken } = useContext(TokenContext);
+
+  console.log(currentClient.client_id);
 
   const [message, setmessage] = useState("");
   const [toggleMessageConversation, settoggleMessageConversation] =
@@ -40,7 +44,7 @@ const ChatSystem = ({
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!currentWorkerID || !currentClientID) {
+    if (!currentWorkerID || !currentClient.client_id) {
       console.log("Error: Sender ID and Receiver ID are required.");
       return;
     }
@@ -48,13 +52,20 @@ const ChatSystem = ({
     try {
       const res = await axiosInstance.post("message/send-message", {
         receiver_id: currentWorkerID,
-        sender_id: currentClientID,
+        sender_id: currentClient.client_id,
         message: message,
       });
       console.log("RESPONSE : ", res.data);
     } catch (error) {
       if (error.response) {
         console.log("Err : ", error.response.data);
+        if (
+          error.response.data.errorToken ===
+            "Access Denied. No Token Provided!" ||
+          error.response.data.errorToken === "Session Expired"
+        ) {
+          setExpiredToken(true);
+        }
       }
       console.log("Error  : ", error);
     }

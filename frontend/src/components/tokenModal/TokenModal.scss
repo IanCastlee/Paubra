@@ -1,0 +1,40 @@
+.token {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #1b262c;
+  border-radius: 10px;
+  height: 80px;
+  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 10px 15px;
+  z-index: 3000;
+
+  p {
+    color: #fff;
+    font-size: 0.875rem;
+  }
+
+  button {
+    border: none;
+    width: fit-content;
+    background-color: transparent;
+    color: #fff;
+    font-size: 1rem;
+    align-self: end;
+    cursor: pointer;
+  }
+}
+
+.token-overlay {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  position: fixed;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  z-index: 2999;
+}

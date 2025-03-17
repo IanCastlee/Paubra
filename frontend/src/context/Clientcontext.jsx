@@ -15,7 +15,6 @@ export const ClientContextProvider = ({ children }) => {
 
     setCurrentClient(res.data.otherDetails);
     console.log("res.data.otherDetails : ", res.data.otherDetails);
-    console.log("CLIENT ID : ", res.data.client_id);
   };
 
   useEffect(() => {

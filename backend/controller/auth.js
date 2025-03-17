@@ -75,12 +75,17 @@ export const login = (req, res) => {
       return res.status(400).json("Password is incorrect!");
     }
 
-    const token = jwt.sign({ id: data[0].worker_id }, "secretkey");
+    // const token = jwt.sign({ id: data[0].worker_id }, "secretkey");
+    const token = jwt.sign({ id: data[0].worker_id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
     const { password, worker_id, ...others } = data[0];
 
     res
       .cookie("accesToken", token, {
         httpOnly: true,
+        secure: (process.env.NODE_ENV = "production"),
+        sameSite: "strict",
       })
       .status(200)
       .json({ worker_id, otherInfo: others });

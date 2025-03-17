@@ -9,6 +9,8 @@ export const AuthContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("userInfo") || null)
   );
 
+  const [worker_id, setworker_id] = useState(null);
+
   const [loading, setLoading] = useState(false);
 
   const [showLoader, setshowLoader] = useState(false);
@@ -18,6 +20,7 @@ export const AuthContextProvider = ({ children }) => {
     const res = await axiosInstance.post("auth/login", form);
 
     setcurrrentuser(res.data.otherInfo);
+    setworker_id(res.data.worker_id);
 
     setTimeout(() => {
       setshowLoader(false);
@@ -51,7 +54,7 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ currrentuser, setcurrrentuser, login, logoutWorker }}
+      value={{ currrentuser, setcurrrentuser, login, logoutWorker, worker_id }}
     >
       {children}
 

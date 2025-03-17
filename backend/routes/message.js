@@ -1,4 +1,5 @@
 import express from "express";
+import { cookieJwtAuth } from "../middleware/auth.js";
 import {
   sendMessage,
   getConversation,
@@ -7,7 +8,7 @@ import {
 
 const route = express.Router();
 
-route.post("/send-message", sendMessage);
+route.post("/send-message", cookieJwtAuth, sendMessage);
 route.get("/get-message", getMessage);
 route.get("/get-conversation", getConversation);
 

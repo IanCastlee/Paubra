@@ -1,6 +1,12 @@
+// import { verifyToken } from "./middleware/auth.js";
+
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import cors from "cors";
 import path from "path";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
@@ -11,6 +17,7 @@ import authroutes_client from "./routes/authroute_client.js";
 import messageRoutes from "./routes/message.js";
 
 // MIDDLEWARES
+app.use(cookieParser());
 app.use(
   cors({
     origin: "http://localhost:5173",
@@ -25,7 +32,7 @@ app.use(
   express.static(path.join(process.cwd(), "user_registration_images"))
 );
 
-//ROURTES WORKER
+//ROUTES WORKER
 app.use("/api/auth", authRoutes);
 app.use("/api/worker", workerRoutes);
 

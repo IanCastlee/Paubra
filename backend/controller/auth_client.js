@@ -77,21 +77,27 @@ export const login_client = (req, res) => {
       return res.status(400).json({ error: "Password is incorrect" });
     }
 
-    const token = jwt.sign({ id: result[0].client_id }, "client_secretkey");
-    const { password, client_id, ...others } = result[0];
+    const token = jwt.sign(
+      { id: result[0].client_id },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    const { password, ...others } = result[0];
 
     res
-      .cookie("clientAccesToken", token, {
+      .cookie("accesToken", token, {
         httpOnly: true,
+        secure: (process.env.NODE_ENV = "production"),
+        sameSite: "strict",
       })
       .status(200)
-      .json({ client_id, otherDetails: others });
+      .json({ otherDetails: others });
   });
 };
 
 export const logout_client = (req, res) => {
   res
-    .clearCookie("clientAccesToken", {
+    .clearCookie("accesToken", {
       secure: true,
       sameSite: "none",
     })

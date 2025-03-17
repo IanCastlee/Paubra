@@ -19,7 +19,6 @@ const Signup = () => {
   const [showLoader, setshowLoader] = useState(false);
   const [succcesMessage, setsucccesMessage] = useState("");
 
-  console.log(purokData);
   //FORM DATA
   const [otherSkills, setOtherSkills] = useState([]);
   const [barangay, setbarangay] = useState("");

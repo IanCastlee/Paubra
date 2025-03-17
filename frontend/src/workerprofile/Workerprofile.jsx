@@ -33,8 +33,6 @@ const Workerprofile = () => {
   const { currentClientID } = useContext(ClientContext);
   const _worker_id = useParams();
 
-  console.log("CurrentUser INOFO : ", currrentuser);
-
   const [visitWorker, setvisitWorker] = useState([]);
   const [closeChat, setcloseChat] = useState(false);
   const [messageToaster, setmessageToaster] = useState(false);
