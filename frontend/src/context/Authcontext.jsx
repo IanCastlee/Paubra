@@ -16,12 +16,7 @@ export const AuthContextProvider = ({ children }) => {
   const [showLoader, setshowLoader] = useState(false);
   const login = async (form) => {
     const res = await axiosInstance.post("auth/login", form);
-
     setcurrrentuser(res.data.otherInfo);
-    setTimeout(() => {
-      setshowLoader(false);
-      window.location.href = `/worker-profile/${currrentuser.worker_id}`;
-    }, 3000);
   };
 
   useEffect(() => {

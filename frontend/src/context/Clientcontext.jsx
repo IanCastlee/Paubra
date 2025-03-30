@@ -14,7 +14,6 @@ export const ClientContextProvider = ({ children }) => {
     const res = await axiosInstance.post("auth-client/login", formData);
 
     setCurrentClient(res.data.otherDetails);
-    console.log("res.data.otherDetails : ", res.data.otherDetails);
   };
 
   useEffect(() => {

@@ -35,6 +35,7 @@ const Signin = () => {
 
     try {
       await login(form);
+      window.location.href = `/worker-profile/${currrentuser.worker_id}`;
     } catch (error) {
       console.log("Error: ", error);
       setTimeout(() => {
