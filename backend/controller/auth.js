@@ -79,16 +79,19 @@ export const login = (req, res) => {
     const token = jwt.sign({ id: data[0].worker_id }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
-    const { password, worker_id, ...others } = data[0];
+
+    // console.log("COOKIES FROM BACKEND WORKER:", token);
+
+    const { password, ...others } = data[0];
 
     res
       .cookie("accesToken", token, {
         httpOnly: true,
-        secure: (process.env.NODE_ENV = "production"),
+        secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       })
       .status(200)
-      .json({ worker_id, otherInfo: others });
+      .json({ otherInfo: others });
   });
 };
 

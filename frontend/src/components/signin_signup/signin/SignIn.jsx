@@ -42,11 +42,6 @@ const SignIn = () => {
     setShowLoader(true);
     try {
       await loginClient(form);
-      // setshowToastNotification(fla);
-      // setMessageFromBackEnd({
-      //   message: "Sign In Succesful",
-      //   messageType: "success",
-      // });
 
       setTimeout(() => {
         navigate("/home");

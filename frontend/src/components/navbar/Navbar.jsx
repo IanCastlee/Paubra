@@ -19,9 +19,6 @@ const Navbar = () => {
   const { currentClient, logout, currentClientID } = useContext(ClientContext);
   const { currrentuser, logoutWorker } = useContext(AuthContext);
 
-  console.log("currentClient", currentClient);
-  console.log("currrentuser", currrentuser);
-
   const navigate = useNavigate();
   const [showSidebar, setShowSidebar] = useState(false);
   const [showDropDown, setShowDropdown] = useState(false);
@@ -39,7 +36,9 @@ const Navbar = () => {
           <li>Home</li>
           <li>Contract</li>
           <li>Notification</li>
-          <li onClick={() => setshowChat(true)}>Message</li>
+          {(currentClient !== null || currrentuser !== null) && (
+            <li onClick={() => setshowChat(true)}>Message</li>
+          )}
 
           {currrentuser === null && currentClient === null && (
             <li onClick={() => navigate("auth/signup")}>Join as a Worker</li>
@@ -94,9 +93,6 @@ const Navbar = () => {
           {showDropDown2 && (
             <div className="drop-down">
               <div className="drop-down-container">
-                {/* <Link className="link">
-                  <LuCircleUser className="icon" /> Profile
-                </Link> */}
                 <Link className="link">
                   <SlSettings className="icon" /> Setting
                 </Link>

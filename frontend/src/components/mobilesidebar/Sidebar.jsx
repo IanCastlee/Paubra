@@ -8,19 +8,19 @@ import userdp from "../../assets/icon/user4.jpg";
 import { GoHomeFill } from "react-icons/go";
 import { RiFolderWarningFill } from "react-icons/ri";
 import { FaPhone } from "react-icons/fa6";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ClientContext } from "../../context/Clientcontext";
 import { useNavigate } from "react-router-dom";
 import { RiLogoutBoxLine } from "react-icons/ri";
 import { GrUserWorker } from "react-icons/gr";
+import { HiChatBubbleOvalLeftEllipsis } from "react-icons/hi2";
+import ChatSystem from "../chatSystem/ChatSystem";
 
 const Sidebar = ({ isVisible, closesidebar }) => {
   const navigate = useNavigate();
   const { currentClient, currentClientID, logout } = useContext(ClientContext);
+  const [showChat, setshowChat] = useState(false);
 
-  console.log("currentClientID", currentClientID);
-
-  console.log("currentClientID", currentClient);
   return (
     <>
       <motion.div
@@ -62,6 +62,9 @@ const Sidebar = ({ isVisible, closesidebar }) => {
             <li>
               <GoHomeFill className="icon" /> Home
             </li>
+            <li onClick={() => setshowChat(true)}>
+              <HiChatBubbleOvalLeftEllipsis className="icon" /> Message
+            </li>
             <li>
               <RiFolderWarningFill className="icon" /> About
             </li>
@@ -81,6 +84,9 @@ const Sidebar = ({ isVisible, closesidebar }) => {
       {isVisible && (
         <div className="sidebar-mobile-overlay" onClick={closesidebar}></div>
       )}
+
+      {/* CHAT BOX */}
+      {showChat && <ChatSystem closeChat={() => setshowChat(false)} />}
     </>
   );
 };

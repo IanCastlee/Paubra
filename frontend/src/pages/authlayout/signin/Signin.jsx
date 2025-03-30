@@ -10,12 +10,11 @@ import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../../context/Authcontext";
 
 const Signin = () => {
-  const { login, currrentuser } = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
 
   const navigate = useNavigate();
 
   const [showLoader, setshowLoader] = useState(false);
-  const [succcesMessage, setsucccesMessage] = useState("");
 
   const [form, setform] = useState({
     username: "",
@@ -101,12 +100,12 @@ const Signin = () => {
           onClick={() => navigate(-1)}
         />
       </div>
-      {/* {showLoader && (
+      {showLoader && (
         <div className="overlay-signin">
           <span>Please wait...</span>
           <span className="loader"></span>
         </div>
-      )} */}
+      )}
     </>
   );
 };

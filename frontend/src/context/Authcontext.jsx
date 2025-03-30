@@ -15,16 +15,12 @@ export const AuthContextProvider = ({ children }) => {
 
   const [showLoader, setshowLoader] = useState(false);
   const login = async (form) => {
-    setshowLoader(true);
-
     const res = await axiosInstance.post("auth/login", form);
 
     setcurrrentuser(res.data.otherInfo);
-    setworker_id(res.data.worker_id);
-
     setTimeout(() => {
       setshowLoader(false);
-      window.location.href = `/worker-profile/${res.data.worker_id}`;
+      window.location.href = `/worker-profile/${currrentuser.worker_id}`;
     }, 3000);
   };
 
@@ -54,7 +50,13 @@ export const AuthContextProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ currrentuser, setcurrrentuser, login, logoutWorker, worker_id }}
+      value={{
+        currrentuser,
+        setcurrrentuser,
+        login,
+        logoutWorker,
+        worker_id,
+      }}
     >
       {children}
 

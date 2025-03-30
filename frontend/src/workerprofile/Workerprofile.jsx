@@ -551,7 +551,7 @@ const Workerprofile = () => {
           closeChat={() => setcloseChat(false)}
           workerIDidPresent={currrentuser}
           currentClientID={currentClientID}
-          currentWorkerID={_worker_id.userid}
+          currentWorkerID={currrentuser.worker_id}
         />
       )}
     </>

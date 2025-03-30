@@ -82,12 +82,14 @@ export const login_client = (req, res) => {
       process.env.JWT_SECRET,
       { expiresIn: "1h" }
     );
+
+    // console.log("COOKIES FROM BACKEND :", token);
     const { password, ...others } = result[0];
 
     res
       .cookie("accesToken", token, {
         httpOnly: true,
-        secure: (process.env.NODE_ENV = "production"),
+        secure: process.env.NODE_ENV === "production",
         sameSite: "strict",
       })
       .status(200)

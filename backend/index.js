@@ -1,48 +1,66 @@
-// import { verifyToken } from "./middleware/auth.js";
-
-import dotenv from "dotenv";
-dotenv.config();
-
+import { createServer } from "http";
+import { Server } from "socket.io";
 import express from "express";
 import cors from "cors";
+import dotenv from "dotenv";
 import path from "path";
 import cookieParser from "cookie-parser";
 
+dotenv.config();
+
 const app = express();
-
-// ROUTES
-import authRoutes from "./routes/authroute.js";
-import workerRoutes from "./routes/worker_routes.js";
-import authroutes_client from "./routes/authroute_client.js";
-import messageRoutes from "./routes/message.js";
-
-// MIDDLEWARES
-app.use(cookieParser());
-app.use(
-  cors({
+const server = createServer(app); // Create HTTP server
+const io = new Server(server, {
+  cors: {
     origin: "http://localhost:5173",
     credentials: true,
-  })
-);
-app.use(express.json());
+  },
+});
 
-//Serve uploaded images (Make folder public)
+// Middleware
+app.use(cookieParser());
+app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(express.json());
 app.use(
   "/upload",
   express.static(path.join(process.cwd(), "user_registration_images"))
 );
 
-//ROUTES WORKER
+// Import routes
+import authRoutes from "./routes/authroute.js";
+import workerRoutes from "./routes/worker_routes.js";
+import authroutes_client from "./routes/authroute_client.js";
+import messageRoutes from "./routes/message.js";
+import tokenRoute from "./routes/auth_token.js";
+
+// API routes
 app.use("/api/auth", authRoutes);
 app.use("/api/worker", workerRoutes);
-
-//ROUTES CLIENT
 app.use("/api/auth-client", authroutes_client);
+app.use("/api/message", messageRoutes(io));
+app.use("/api/token", tokenRoute);
 
-//ROUTES SEND MESSAGE
-app.use("/api/message", messageRoutes);
+// Socket.IO logic
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
 
-const port = 8080;
-app.listen(port, () => {
-  console.log(`Server running on port ${port}...`);
+  //...this is the  sent conversation ID/room from frontend
+  socket.on("joinRoom", (room) => {
+    socket.join(room);
+    console.log(`User joined room: ${room}`);
+  });
+
+  socket.on("sendMessage", (data) => {
+    io.to(data.room).emit("receiveMessage", data);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected");
+  });
+});
+
+// Start server
+const PORT = 8080;
+server.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}...`);
 });

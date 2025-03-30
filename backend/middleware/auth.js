@@ -1,28 +1,24 @@
 import jwt from "jsonwebtoken";
 
 export const cookieJwtAuth = (req, res, next) => {
-  console.log("Checking authentication...");
-
-  // Ensure cookies exist
-  if (!req.cookies || !req.cookies.accesToken) {
-    console.log("No token provided!");
-    return res
-      .status(401)
-      .json({ errorToken: "Access Denied. No Token Provided!" });
-  }
+  // console.log("Checking authentication...");
+  // console.log("Cookies received:", req.cookies);
 
   const token = req.cookies.accesToken;
 
-  try {
-    const user = jwt.verify(token, process.env.JWT_SECRET);
-    console.log("Token verified successfully:", user);
+  if (!token) {
+    // console.log(" No token provided!");
+    return res.status(401).json({ error: "Access Denied. No Token Provided!" });
+  }
 
-    req.user = user;
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    // console.log("Token is valid:", decoded);
+    req.user = decoded;
     next();
   } catch (error) {
-    console.log("Invalid or expired token:", error.message);
-
+    // console.log(" Invalid token:", error.message);
     res.clearCookie("accesToken");
-    return res.status(401).json({ errorToken: "Session Expired" });
+    return res.status(401).json({ error: "Invalid or expired token" });
   }
 };

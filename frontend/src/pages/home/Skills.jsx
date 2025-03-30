@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 //ICONS
 import { IoSearchOutline } from "react-icons/io5";
 import axiosInstance from "../../axios";
+import BestWorker from "../../components/bestWorker/BestWorker";
 
 const Skills = () => {
   const skill = "Electrician";

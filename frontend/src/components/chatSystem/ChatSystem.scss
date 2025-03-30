@@ -199,12 +199,12 @@
               color: #fff;
 
               &.user {
-                border-radius: 12px 12px 12px 0;
+                border-radius: 12px 12px 12px 3px;
                 background-color: #302a2a;
               }
 
               &.other {
-                border-radius: 12px 12px 0 12px;
+                border-radius: 12px 12px 3px 12px;
                 background-color: #383737;
               }
             }
