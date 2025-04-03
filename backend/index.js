@@ -9,18 +9,27 @@ import cookieParser from "cookie-parser";
 dotenv.config();
 
 const app = express();
-const server = createServer(app); // Create HTTP server
+const server = createServer(app);
+
+// Define allowed origins
+
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
-    origin: "https://paubra-r1zaos4ja-eyhan.vercel.app/",
+    origin: "https://paubra.onrender.com",
     credentials: true,
   },
 });
 
 // Middleware
 app.use(cookieParser());
-app.use(cors({ origin: "http://localhost:5173", credentials: true }));
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    origin: "https://paubra.onrender.com",
+    credentials: true,
+  })
+);
 app.use(express.json());
 app.use(
   "/upload",
