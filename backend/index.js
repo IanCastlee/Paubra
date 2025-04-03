@@ -13,6 +13,7 @@ const server = createServer(app); // Create HTTP server
 const io = new Server(server, {
   cors: {
     origin: "http://localhost:5173",
+    origin: "https://paubra-r1zaos4ja-eyhan.vercel.app/",
     credentials: true,
   },
 });
