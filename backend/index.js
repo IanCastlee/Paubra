@@ -25,6 +25,7 @@ app.use(
   "/upload",
   express.static(path.join(process.cwd(), "user_registration_images"))
 );
+app.use("/upload", express.static(path.join(process.cwd(), "message_images")));
 
 // Import routes
 import authRoutes from "./routes/authroute.js";
@@ -50,9 +51,11 @@ io.on("connection", (socket) => {
     console.log(`User joined room: ${room}`);
   });
 
-  socket.on("sendMessage", (data) => {
-    io.to(data.room).emit("receiveMessage", data);
-  });
+  //roomForConersation
+  // socket.on("roomForConersation", (room) => {
+  //   socket.join(room);
+  //   console.log(`Join  roomForConersation : ${room}`);
+  // });
 
   socket.on("disconnect", () => {
     console.log("A user disconnected");

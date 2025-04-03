@@ -3,6 +3,8 @@ import { db } from "../databaseConnection.js";
 
 //SEND MESSAGE
 export const sendMessage = (req, res, io) => {
+  const { sender_id, receiver_id, message } = req.body;
+
   if (!req.body.sender_id || !req.body.receiver_id) {
     return res
       .status(400)
@@ -14,29 +16,21 @@ export const sendMessage = (req, res, io) => {
 
   db.query(
     checkIfThereIsAConversation,
-    [
-      req.body.sender_id,
-      req.body.receiver_id,
-      req.body.receiver_id,
-      req.body.sender_id,
-    ],
+    [sender_id, receiver_id, receiver_id, sender_id],
     (err, data) => {
-      if (err) {
-        return res.status(500).json(err);
-      }
+      if (err) return res.status(500).json(err);
 
       let conversationId;
 
       if (data.length === 0) {
-        // No conversation exists, create a new one
+        // No conversation exists, create one
         const insertConversation =
           "INSERT INTO tbl_conversation(`user_1`,`user_2`) VALUES (?, ?)";
         db.query(
           insertConversation,
-          [req.body.sender_id, req.body.receiver_id],
+          [sender_id, receiver_id],
           (err, result) => {
             if (err) return res.status(500).json(err);
-
             conversationId = result.insertId;
             insertMessage(conversationId);
           }
@@ -47,26 +41,24 @@ export const sendMessage = (req, res, io) => {
       }
 
       function insertMessage(conversationId) {
+        const messageImage = req.file ? req.file.filename : null;
+
         const insertMessage =
-          "INSERT INTO tbl_chats (`sender_id`, `conversation_id`, `receiver_id`, `message`, `sent_time`) VALUES (?, ?, ?, ?, NOW())";
+          "INSERT INTO tbl_chats (`sender_id`, `conversation_id`, `receiver_id`, `message`, `image_message`, `sent_time`) VALUES (?, ?, ?, ?, ?, NOW())";
 
         db.query(
           insertMessage,
-          [
-            req.body.sender_id,
-            conversationId,
-            req.body.receiver_id,
-            req.body.message,
-          ],
+          [sender_id, conversationId, receiver_id, message, messageImage],
           (err, result) => {
             if (err) return res.status(500).json(err);
 
-            //After the sendet sent a  message a socket will emit and send a data(jason) to frontend to display the message realtime
+            // Emit message update to frontend
             io.to(conversationId).emit("receiveMessage", {
               other_profile_picture: req.body.currentLoggedinProfilepic,
-              sender_id: req.body.sender_id,
-              receiver_id: req.body.receiver_id,
-              message: req.body.message,
+              sender_id: Number(sender_id),
+              receiver_id,
+              message,
+              image_message: messageImage ? messageImage : null,
               conversation_id: conversationId,
             });
 
@@ -81,7 +73,7 @@ export const sendMessage = (req, res, io) => {
 };
 
 //GET CONVERSATION
-export const getConversation = (req, res) => {
+export const getConversation = (req, res, io) => {
   const currrentLoggedIn = req.query.currrentLoggedIn;
 
   if (!currrentLoggedIn) {
@@ -127,6 +119,14 @@ ORDER BY ch.sent_time DESC;
       if (err) {
         return res.status(500).json({ error: err.message });
       }
+
+      io.to(currrentLoggedIn).emit("currentConversationData", {
+        result: result,
+      });
+
+      io.to(currrentLoggedIn).emit("currentConversationData", {
+        result: result,
+      });
 
       return res.status(200).json(result);
     }

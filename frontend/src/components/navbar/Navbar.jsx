@@ -41,7 +41,7 @@ const Navbar = () => {
           )}
 
           {currrentuser === null && currentClient === null && (
-            <li onClick={() => navigate("auth/signup")}>Join as a Worker</li>
+            <li onClick={() => navigate("auth/signin")}>Join as a Worker</li>
           )}
           {currentClientID !== null && (
             <img

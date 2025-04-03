@@ -35,7 +35,7 @@ const Signin = () => {
 
     try {
       await login(form);
-      window.location.href = `/worker-profile/${currrentuser.worker_id}`;
+      setshowLoader(false);
     } catch (error) {
       console.log("Error: ", error);
       setTimeout(() => {
@@ -55,7 +55,7 @@ const Signin = () => {
           </div>
           <div className="signin-right">
             <div className="signin-right-top">
-              <h3>Sign In your Paubra Accout</h3>
+              <h3>Sign In your Paubra Account</h3>
               <div className="mobile-added-img">
                 <img src={logo2} alt="" />
               </div>

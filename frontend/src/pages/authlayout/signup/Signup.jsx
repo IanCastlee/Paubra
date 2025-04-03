@@ -17,7 +17,6 @@ const Signup = () => {
   const navigate = useNavigate();
 
   const [showLoader, setshowLoader] = useState(false);
-  const [succcesMessage, setsucccesMessage] = useState("");
 
   //FORM DATA
   const [otherSkills, setOtherSkills] = useState([]);

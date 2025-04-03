@@ -1,5 +1,5 @@
 import express from "express";
-import { cookieJwtAuth } from "../middleware/auth.js";
+import multer from "multer";
 import {
   sendMessage,
   getConversation,
@@ -8,13 +8,27 @@ import {
 
 const route = express.Router();
 
-// Export a function that accepts `io`
-export default (io) => {
-  route.post("/send-message", cookieJwtAuth, (req, res) =>
+//Setup Multer Storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "message_images/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+const upload = multer({ storage });
+
+const messageRoutes = (io) => {
+  route.post("/send-message", upload.single("messageImage"), (req, res) =>
     sendMessage(req, res, io)
   );
+
   route.get("/chats", (req, res) => getMessage(req, res, io));
   route.get("/conversation", (req, res) => getConversation(req, res, io));
 
   return route;
 };
+
+export default messageRoutes;

@@ -13,10 +13,10 @@ export const AuthContextProvider = ({ children }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const [showLoader, setshowLoader] = useState(false);
   const login = async (form) => {
     const res = await axiosInstance.post("auth/login", form);
     setcurrrentuser(res.data.otherInfo);
+    window.location.href = `/worker-profile/${currrentuser.worker_id}`;
   };
 
   useEffect(() => {
@@ -55,15 +55,12 @@ export const AuthContextProvider = ({ children }) => {
     >
       {children}
 
-      {showLoader ||
-        (loading && (
-          <div className="overlay-signin">
-            <span>
-              {loading ? "Logging out..." : showLoader ? "Please wait..." : ""}
-            </span>
-            <span className="loader"></span>
-          </div>
-        ))}
+      {loading && (
+        <div className="overlay-signin">
+          <span>{loading && "Logging out..."}</span>
+          <span className="loader"></span>
+        </div>
+      )}
     </AuthContext.Provider>
   );
 };

@@ -148,7 +148,7 @@
         }
       }
 
-      .right {
+      .icon-right-wrapper {
         .menu-icon {
           font-size: 1.25rem;
           color: #242121;
@@ -198,6 +198,31 @@
               height: fit-content;
               color: #fff;
 
+              @keyframes wiggle {
+                0%,
+                100% {
+                  transform: rotate(0deg);
+                  font-size: 200px;
+                }
+                25% {
+                  transform: rotate(-10deg);
+                }
+                50% {
+                  transform: rotate(10deg);
+                }
+                75% {
+                  transform: rotate(-5deg);
+                  font-size: 20px;
+                }
+              }
+
+              &.like-message {
+                background-color: transparent !important;
+                font-size: 50px;
+                display: inline-block;
+                animation: wiggle 0.9s ease-in-out infinite;
+              }
+
               &.user {
                 border-radius: 12px 12px 12px 3px;
                 background-color: #302a2a;
@@ -208,6 +233,21 @@
                 background-color: #383737;
               }
             }
+
+            .image-message {
+              width: 200px;
+              height: auto;
+              border-radius: 8px;
+
+              &.user {
+                align-self: flex-end;
+              }
+
+              &.other {
+                align-self: flex-start;
+              }
+            }
+
             .time {
               font-size: 8px;
               color: #242121;
@@ -246,12 +286,32 @@
       height: auto;
       gap: 10px;
 
+      .file-icon {
+        cursor: pointer;
+        font-size: 25px;
+        color: #1b262c;
+      }
+
       .input-wrapper {
         height: 40px;
         background-color: #fff;
         border-radius: 25px;
-        width: 90%;
+        width: 80%;
         overflow: hidden;
+
+        .preview-container {
+          height: 30px;
+          width: 30px;
+          margin-left: 20px;
+          margin-top: 5px;
+          border-radius: 5px;
+          img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            border-radius: 5px;
+          }
+        }
         input {
           height: 100%;
           width: 100%;
@@ -266,6 +326,12 @@
         }
       }
 
+      .btn-like {
+        font-size: 35px;
+        cursor: pointer;
+        color: blue;
+      }
+
       .btn-send {
         height: 40px;
         width: 40px;
@@ -277,10 +343,19 @@
         border: 1px solid lightgray;
         background-color: green;
 
+        &.nullInputField {
+          background-color: gray;
+          cursor: pointer;
+        }
+
         .send-icon {
           font-size: 20px;
           cursor: pointer;
           color: #ffffff;
+
+          &.nullInputField {
+            cursor: pointer;
+          }
         }
       }
     }
@@ -336,6 +411,7 @@
         flex-direction: column;
         overflow-y: auto;
         padding-bottom: 120px;
+        // padding-bottom: 70px;
 
         .chat-card {
           max-width: 70%;
@@ -422,7 +498,7 @@
           height: 40px;
           background-color: #fff;
           border-radius: 25px;
-          width: 90%;
+          width: 80%;
           overflow: hidden;
           input {
             height: 100%;
