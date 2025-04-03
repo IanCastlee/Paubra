@@ -52,7 +52,7 @@ export const sendMessage = (req, res, io) => {
           (err, result) => {
             if (err) return res.status(500).json(err);
 
-            // Emit message update to frontend
+            // Emit message update to frontendgg
             io.to(conversationId).emit("receiveMessage", {
               other_profile_picture: req.body.currentLoggedinProfilepic,
               sender_id: Number(sender_id),
